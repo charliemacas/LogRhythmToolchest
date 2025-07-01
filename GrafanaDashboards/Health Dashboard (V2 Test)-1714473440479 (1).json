@@ -1,0 +1,2258 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ELASTICSEARCH",
+      "label": "Elasticsearch",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "elasticsearch",
+      "pluginName": "Elasticsearch"
+    },
+    {
+      "name": "DS_EMDB_DATABASE",
+      "label": "EMDB Database",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    },
+    {
+      "name": "DS_TELEGRAF",
+      "label": "telegraf",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.5.7"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table-old",
+      "name": "Table (old)",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 58,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "",
+          "url": "https://community.logrhythm.com/"
+        }
+      ],
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<a href=\"https://community.logrhythm.com/\" target=\"_blank\">\n  <div style=\"display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; cursor: pointer;\">\n    <img src=\"https://logrhythm.com/wp-content/uploads/2023/05/LogRhythm_R_Logo_ForLightBackgrounds_RGB.png\" style=\"display: block; margin: auto;\">\n    <p style=\"margin-top: 10px;\">Visit Community</p>\n  </div>\n</a>\n\n\n",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 65,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Type$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 45
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT A.[AlarmID]\r\n      ,AR.[Name] AS [Diagnostic Alarm Name]\r\n      ,A.[AlarmDate]\r\n\t  ,AR.[AlarmRuleGroup] AS [Type]\r\nFROM [LogRhythm_Alarms].[dbo].[Alarm] A\r\nJOIN [LogRhythmEMDB].[dbo].[AlarmRule] AR ON A.[AlarmRuleID] = AR.[AlarmRuleID]\r\nWHERE AR.[AlarmRuleGroup] = 'LogRhythm Diagnostics'\r\n      AND A.[AlarmDate] >= DATEADD(DAY, -1, GETDATE());",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Diagnostics Alarms (Last 1 Day)",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Type$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 45
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT A.[AlarmID]\r\n      ,AR.[Name] AS [Diagnostic Alarm Name]\r\n      ,A.[AlarmDate]\r\n\t  ,AR.[AlarmRuleGroup] AS [Type]\r\nFROM [LogRhythm_Alarms].[dbo].[Alarm] A\r\nJOIN [LogRhythmEMDB].[dbo].[AlarmRule] AR ON A.[AlarmRuleID] = AR.[AlarmRuleID]\r\nWHERE AR.[AlarmRuleGroup] = 'LogRhythm Diagnostics'\r\n      AND A.[AlarmDate] >= DATEADD(DAY, -7, GETDATE());",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Diagnostics Alarms (Last 7 Days)",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "max": 500000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 6,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 45
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "USE [LogRhythm_LogMart];\r\nSELECT\r\n  [Avg MPS] = CAST(SUM(CAST(CountProcessedLogs as BIGINT)) AS real) / CAST(DATEDIFF(ss,$__timeFrom(),$__timeTo()) as BIGINT),\r\n\t[Max MPS] = CAST(MAX(CountProcessedLogs) AS float) / 60.0\r\nFROM\r\n\t[dbo].StatsDeploymentCountsMinute with (NOLOCK)\r\nWHERE  $__timeFilter(StatDate);",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Average MPS",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Max MPS": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "max": 500000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 64,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 45
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "USE [LogRhythm_LogMart];\r\nSELECT\r\n  [Avg MPS] = CAST(SUM(CAST(CountProcessedLogs as BIGINT)) AS real) / CAST(DATEDIFF(ss,$__timeFrom(),$__timeTo()) as BIGINT),\r\n\t[Max MPS] = CAST(MAX(CountProcessedLogs) AS float) / 60.0\r\nFROM\r\n\t[dbo].StatsDeploymentCountsMinute with (NOLOCK)\r\nWHERE  $__timeFilter(StatDate);",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Max MPS",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Avg MPS": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Version",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Version"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Installed Version"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 4
+      },
+      "id": 59,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/.*/",
+          "values": true
+        },
+        "text": {
+          "valueSize": 45
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CONCAT([Minor], '.', [Patch], '.', [Revision]) AS Version\r\nFROM \r\n    [LogRhythmEMDB].[dbo].[SCDBVersion]\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 4
+      },
+      "id": 60,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "- [Go To Support](https://logrhythm.my.site.com/support/s/)\n- [Go To LR Documentation](https://docs.logrhythm.com/?l=en)\n- [Go To Community](https://community.logrhythm.com/)\n- [Go To Grafana Documentation](https://grafana.com/docs/)\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.5.7",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 4
+      },
+      "id": 62,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "aie",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "Current_#_of_Data_Files"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Number Of AIE Backlog Files",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 4
+      },
+      "id": 63,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "adhocFilters": [],
+          "alias": "Number Of DXRP (Backlog) Files",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "key": "Q-0dd9d5d4-530c-4c89-af46-86a13bcdfd44-0",
+          "limit": "",
+          "measurement": "messaging.messages",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "#_Messages_Written_to_Disk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host::tag",
+              "operator": "=~",
+              "value": "/^LRS-ENG-CM$/"
+            }
+          ],
+          "tz": ""
+        }
+      ],
+      "title": "Number Of DXRP Backlog Files",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 183
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "host"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 143
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 4
+      },
+      "id": 66,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "adhocFilters": [],
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "name"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "host"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "key": "Q-243da79e-f4e6-4768-9bb4-5772133c2400-0",
+          "limit": "1",
+          "measurement": "elasticsearch_cluster_health",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "query": "",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "status"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [],
+          "tz": ""
+        }
+      ],
+      "title": "Elasticsearch Health",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n    CONVERT(VARCHAR(10), AlarmDate, 101) AS [Date],\r\n    ISNULL(New, 0) + ISNULL(OpenAlarm, 0) + ISNULL(Working, 0) + ISNULL(Escalated, 0) + ISNULL(AutoClosed, 0) +\r\n    ISNULL(FalsePositive, 0) + ISNULL(Resolved, 0) + ISNULL(UnResolved, 0) + ISNULL(Reported, 0) + ISNULL(Monitor, 0) AS Total,\r\n    ISNULL(AutoClosed, 0) + ISNULL(FalsePositive, 0) + ISNULL(Resolved, 0) + ISNULL(UnResolved, 0) +\r\n    ISNULL(Reported, 0) + ISNULL(Monitor, 0) AS Closed\r\nFROM\r\n    (\r\n        SELECT\r\n            CONVERT(DATE, AlarmDate) AS AlarmDate,\r\n            COUNT(AlarmName.Name) AS AlarmCount,\r\n            (CONVERT(NVARCHAR, CASE\r\n                WHEN AlarmStatus = 0 THEN 'New'\r\n                WHEN AlarmStatus = 1 THEN 'OpenAlarm'\r\n                WHEN AlarmStatus = 2 THEN 'Working'\r\n                WHEN AlarmStatus = 3 THEN 'Escalated'\r\n                WHEN AlarmStatus = 4 THEN 'AutoClosed'\r\n                WHEN AlarmStatus = 5 THEN 'FalsePositive'\r\n                WHEN AlarmStatus = 6 THEN 'Resolved'\r\n                WHEN AlarmStatus = 7 THEN 'UnResolved'\r\n                WHEN AlarmStatus = 8 THEN 'Reported'\r\n                WHEN AlarmStatus = 9 THEN 'Monitor' END)\r\n            ) AS AlarmStatus\r\n        FROM\r\n            [LogRhythm_Alarms].[dbo].[Alarm] AS Alarm\r\n            JOIN LogRhythmEMDB.dbo.AlarmRule AS AlarmName ON Alarm.AlarmRuleID = AlarmName.AlarmRuleID\r\n        WHERE\r\n            Alarm.AlarmDate BETWEEN GETDATE() - 6 AND GETDATE()\r\n        GROUP BY\r\n            AlarmDate, AlarmStatus\r\n    ) d\r\nPIVOT\r\n    (\r\n        SUM(AlarmCount)\r\n        FOR AlarmStatus IN (New, OpenAlarm, Working, Escalated, AutoClosed, FalsePositive, Resolved, UnResolved, Reported, Monitor)\r\n    ) piv;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Weekly Alarms Status",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "AlarmDate": false
+            },
+            "indexByName": {},
+            "renameByName": {
+              "AlarmDate": "Date"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "AlarmDate"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "series",
+            "axisLabel": "Count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 19,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Logs Processed"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 8,
+        "y": 8
+      },
+      "id": 46,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select \r\n  $__timeGroup(StatDate, '1d') AS time,\r\n  [Logs Processed] = SUM(cast(CountProcessedLogs as bigint)),\r\n  [Actual Logs Processed By AIEs] = SUM(cast(CountAnalyzedLogs as bigint)),\r\n  [Logs Processed By AIEs] = \r\n    case \r\n      when SUM(cast(CountAnalyzedLogs as bigint)) = 0 THEN 0\r\n      when SUM(cast(CountAnalyzedLogs as bigint)) <= SUM(cast(CountProcessedLogs as bigint)) THEN SUM(cast(CountAnalyzedLogs as bigint))\r\n      else SUM(cast(CountProcessedLogs as bigint))\r\n    end,\r\n  [Events Forwarded By LMs] = SUM(cast(CountEventsForwarded as bigint)),\r\n  [Events Forwarded By AIEs] = SUM(cast(CountEventsAIEngine as bigint)),\r\n  [Alarms] = SUM(cast(CountAlarms as bigint))\r\nfrom \r\n  LogRhythm_LogMart.dbo.StatsDeploymentCountsHour with (NOLOCK)\r\nWHERE \r\n  $__timeFilter(StatDate)\r\ngroup by \r\n   $__timeGroup(StatDate, '1d');",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number Of DXRP (Backlog) Files"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 15
+      },
+      "id": 55,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "adhocFilters": [],
+          "alias": "Number Of DXRP (Backlog) Files",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "key": "Q-0dd9d5d4-530c-4c89-af46-86a13bcdfd44-0",
+          "limit": "",
+          "measurement": "messaging.messages",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "#_Messages_Written_to_Disk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host::tag",
+              "operator": "=~",
+              "value": "/^LRS-ENG-CM$/"
+            }
+          ],
+          "tz": ""
+        }
+      ],
+      "title": "Spooled DXRP On DP (Backlog Files)",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 8,
+        "y": 15
+      },
+      "id": 54,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "adhocFilters": [],
+          "alias": "Received",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "dsType": "influxdb",
+          "fields": [
+            {
+              "func": "mean",
+              "name": "value"
+            }
+          ],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "groupByTags": [],
+          "hide": true,
+          "key": "Q-d738dcf3-1911-48e8-9512-d035baedd46f-0",
+          "limit": "",
+          "measurement": "transporter.logs.received",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"Transporter.LogsReceived\" WHERE \"host\" =~ /LRS-ENG-CM/ AND \"service\" = 'transporter' AND $timeFilter GROUP BY time($interval)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/LRS-ENG-CM/"
+            }
+          ],
+          "tz": ""
+        },
+        {
+          "adhocFilters": [],
+          "alias": "Sent",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "dsType": "influxdb",
+          "fields": [
+            {
+              "func": "mean",
+              "name": "value"
+            }
+          ],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "groupByTags": [],
+          "hide": true,
+          "key": "Q-7fffa8b9-f324-40df-bfdd-90332a981a9e-1",
+          "limit": "",
+          "measurement": "transporter.logs.sent",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"Transporter.LogsSent\" WHERE \"host\" =~ /LRS-ENG-CM/ AND \"service\" = 'transporter' AND $timeFilter GROUP BY time($interval)",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/LRS-ENG-CM/"
+            }
+          ],
+          "target": "",
+          "tz": ""
+        },
+        {
+          "adhocFilters": [],
+          "alias": "Indexed",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "dsType": "influxdb",
+          "fields": [
+            {
+              "func": "mean",
+              "name": "value"
+            }
+          ],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "groupByTags": [],
+          "hide": false,
+          "key": "Q-fc8b5768-28d5-4fc5-b100-c9aac6bcf7d6-2",
+          "limit": "",
+          "measurement": "transporter.logs.indexed",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"Transporter.LogsIndexed\" WHERE \"host\" =~ /LRS-ENG-CM/ AND \"service\" = 'transporter' AND $timeFilter GROUP BY time($interval)",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/LRS-ENG-CM/"
+            }
+          ],
+          "target": "",
+          "tz": ""
+        },
+        {
+          "adhocFilters": [],
+          "alias": "Indexing Failure",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "key": "Q-542aeb83-327f-42db-a217-b81831abd716-3",
+          "limit": "",
+          "measurement": "",
+          "orderByTime": "ASC",
+          "policy": "transporter.logs.failed",
+          "query": "",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/LRS-ENG-CM/"
+            }
+          ],
+          "tz": ""
+        },
+        {
+          "adhocFilters": [],
+          "alias": "Logs Dropped",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "key": "Q-b2198b02-a896-40fd-aaed-727eabba05ab-4",
+          "limit": "",
+          "measurement": "transporter.logs.dropped",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "1s"
+                ],
+                "type": "non_negative_derivative"
+              }
+            ]
+          ],
+          "slimit": "",
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/LRS-ENG-CM/"
+            }
+          ],
+          "tz": ""
+        }
+      ],
+      "title": "Indexing Rates",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "noValue": "No Failed Jobs - Good Work",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 22
+      },
+      "id": 47,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "USE msdb;\r\n\r\nSELECT\r\n    job.name AS [Job Name],\r\n    run.run_status AS [Run Status],\r\n    run.run_date AS [Run Date],\r\n    run.run_duration AS [Run Duration (HH:MM:SS)],\r\n    run.message AS [Run Message]\r\nFROM\r\n    msdb.dbo.sysjobs job\r\n    JOIN msdb.dbo.sysjobhistory run ON job.job_id = run.job_id\r\nWHERE\r\n    run.run_status = 0 -- 0 represents failure\r\nORDER BY\r\n    run.run_date DESC, job.name, run.run_duration;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Failed SQL Jobs",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Diagnostic Alarm Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 388
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AlarmDate"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 203
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Triggered On"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 186
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 16,
+        "x": 8,
+        "y": 22
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT A.[AlarmID]\r\n      ,AR.[Name] AS [Diagnostic Alarm Name]\r\n      ,A.[AlarmDate]\r\n\t  ,AR.[AlarmRuleGroup] AS [Type]\r\nFROM [LogRhythm_Alarms].[dbo].[Alarm] A\r\nJOIN [LogRhythmEMDB].[dbo].[AlarmRule] AR ON A.[AlarmRuleID] = AR.[AlarmRuleID]\r\nWHERE AR.[AlarmRuleGroup] = 'LogRhythm Diagnostics';",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": " LogRhythm Diagnostics Alarms",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "AlarmID": false,
+              "Type": false
+            },
+            "indexByName": {
+              "AlarmDate": 1,
+              "AlarmID": 3,
+              "Diagnostic Alarm Name": 0,
+              "Type": 2
+            },
+            "renameByName": {
+              "AlarmDate": "Triggered On",
+              "AlarmID": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Triggered On"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 61,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.2.5",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Last Run Date",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "USE [msdb];\r\n\r\n SELECT \r\n case j.[enabled] \r\n\t\twhen 0 then 'Disabled'\r\n\t\twhen 1 then 'Enabled'\r\n\t\tend as [Job Status],\r\n     j.[name] AS [Job Name],\r\n     s.[last_outcome_message] AS [Last Message],\r\n\t    \r\n\tCONVERT(int,s.last_run_date,101) as [Last Run Date], --(Issues with Conversion of date which is stored as INT)\r\n\tcase s.last_run_outcome\r\n\t\twhen 0 then 'Failed'\r\n\t\twhen 1 then 'Successful'\r\n\t\tend as [Last Run Status]\r\n\r\n  --    s.last_run_time as [Last Run Time]\r\n FROM [dbo].[sysjobs] AS j\r\n INNER JOIN [dbo].[sysjobservers] AS s ON s.[job_id] = j.[job_id]\r\n WHERE j.[enabled] = 1\r\n ORDER BY s.[last_run_date];\r\n\r\n--select * from [dbo].[sysjobservers]\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "SQL Maintenance Jobs",
+      "transform": "table",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table-old"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Health Dashboard (V2 Test)",
+  "uid": "d71d3adb-ec99-48ce-a9ec-162ccd7c7593",
+  "version": 79,
+  "weekStart": ""
+}

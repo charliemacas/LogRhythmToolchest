@@ -1,0 +1,2271 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ELASTICSEARCH",
+      "label": "Elasticsearch",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "elasticsearch",
+      "pluginName": "Elasticsearch"
+    },
+    {
+      "name": "DS_EMDB_DATABASE",
+      "label": "EMDB Database",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.5.7"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://focus.namirial.global/wp-content/uploads/sites/4/2023/06/ai-in-cybersecurity.jpeg\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst One",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 2,
+        "y": 0
+      },
+      "id": 26,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 0
+      },
+      "id": 21,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GWsdm7U24ublz-SL53Ah19ifjav31H58rw&usqp=CAU\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Six",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 0
+      },
+      "id": 41,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 5,
+        "x": 16,
+        "y": 0
+      },
+      "id": 36,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT P.[FullName] AS [AnalystFullName]\r\n      ,COUNT(*) AS [RowCount]\r\nFROM [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE AH.[Comments] LIKE '%closed%'\r\n      AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY P.[FullName]\r\nORDER BY [RowCount] DESC;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Alarm Closures Per Analyst - This Week",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "AnalystFullName": "Analyst Name",
+              "RowCount": "Number Of Closes"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^AlarmID$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT [AlarmID]\r\n      ,[EntityID]\r\n      ,[AlarmRuleID]\r\n      ,[AlarmDate]\r\n      ,[DateInserted]\r\n      ,[DateUpdated]\r\n      ,[AlarmStatus]\r\n      ,[LastPersonID]\r\nFROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE [AlarmDate] >= DATEADD(DAY, -7, GETDATE());",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Total Alarms (Last 7 Days)",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 4
+      },
+      "id": 15,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://www.netcov.com/wp-content/pubfiles/2022/07/shutterstock_1092829541.jpg\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Two",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 2,
+        "y": 4
+      },
+      "id": 37,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 4
+      },
+      "id": 22,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://i.pinimg.com/736x/85/8e/be/858ebe9a587575f28efcc48e2d8fd855.jpg\"\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Seven",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 4
+      },
+      "id": 42,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 21,
+        "y": 7
+      },
+      "id": 7,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^AlarmID$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT [AlarmID]\r\n      ,[EntityID]\r\n      ,[AlarmRuleID]\r\n      ,[AlarmDate]\r\n      ,[DateInserted]\r\n      ,[DateUpdated]\r\n      ,[AlarmStatus]\r\n      ,[LastPersonID]\r\nFROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE [AlarmDate] >= DATEADD(DAY, -30, GETDATE());",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Total Alarms (Last 30 Days)",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 8
+      },
+      "id": 18,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxStXIvlW_jtHmIla0NLr9wqINSYCaHcqwzQ&usqp=CAU\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Three",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 2,
+        "y": 8
+      },
+      "id": 38,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 8
+      },
+      "id": 24,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://2456764.fs1.hubspotusercontent-na1.net/hub/2456764/hubfs/Blog_Images/2107_Blogs/cybersecurity-tips-1200-627.jpg?width=1440&name=cybersecurity-tips-1200-627.jpg\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Eight",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 8
+      },
+      "id": 43,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 12
+      },
+      "id": 19,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://apicms.thestar.com.my/uploads/images/2023/06/27/2147131.jpg\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Four",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 2,
+        "y": 12
+      },
+      "id": 39,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 12
+      },
+      "id": 25,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://media.istockphoto.com/id/1350595566/photo/cyber-security-firewall-interface-protection-concept-businesswoman-protecting-herself-from.jpg?s=612x612&w=0&k=20&c=9i4-mWszc5FRU_iaI3ISHkmJKHn1ZCfhWjechO4H9NY=\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Nine",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 12
+      },
+      "id": 44,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "gauge",
+              "valueDisplayMode": "color"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 100
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 400
+              },
+              {
+                "color": "#EF843C",
+                "value": 800
+              },
+              {
+                "color": "#E24D42",
+                "value": 1000
+              },
+              {
+                "color": "#1F78C1",
+                "value": 5000
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Number"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Alarm Priority"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-green",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 16,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  Priority,\n  COUNT(*) as Count\nFROM\n   (SELECT alm.[AlarmDate], alm.AlarmStatus,atm.MARCMsgID FROM [LogRhythm_Alarms].[dbo].[Alarm] alm JOIN [LogRhythm_Alarms].dbo.AlarmToMARCMsg atm ON alm.AlarmID = atm.AlarmID) almm\n\t\tJOIN\n\t(SELECT \n\t\tMsgID,\n\t\t(CASE WHEN Priority >= 90 THEN 'Critical' WHEN Priority BETWEEN 75 AND 89 THEN 'Very High' WHEN Priority BETWEEN 65 AND 74 THEN 'High' WHEN Priority BETWEEN 50 AND 64 THEN 'Medium' WHEN Priority < 50 THEN 'Low' END) AS Priority \n\tFROM LogRhythm_Events.dbo.Msg) emsg \n\t\t\tON emsg.MsgID = almm.MARCMsgID\n\tWHERE\n  $__timeFilter(almm.AlarmDate)\nGROUP BY\n  Priority\nORDER BY\n  CASE Priority\n    WHEN 'Critical' THEN 1\n    WHEN 'Very High' THEN 2\n    WHEN 'High' THEN 3\n    WHEN 'Medium' THEN 4\n    WHEN 'Low' THEN 5\n  END",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarm Priority",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 14
+      },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^AlarmID$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT [AlarmID]\r\n      ,[EntityID]\r\n      ,[AlarmRuleID]\r\n      ,[AlarmDate]\r\n      ,[DateInserted]\r\n      ,[DateUpdated]\r\n      ,[AlarmStatus]\r\n      ,[LastPersonID]\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Total Alarms (90 Days)",
+      "transformations": [],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 16
+      },
+      "id": 20,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"data:image/jpeg;base64,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\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Five",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 2,
+        "y": 16
+      },
+      "id": 40,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 16
+      },
+      "id": 46,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><img src=\"https://its.ny.gov/sites/g/files/oee1301/files/styles/mobile_lead/public/media/2022/10/cybersecurity_awareness_hero_0.png?h=1a2bbfb3&itok=EL76EnTF\">\n         ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Analyst Ten",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 10,
+        "y": 16
+      },
+      "id": 45,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END AS [CommentGroup],\r\n    COUNT(*) AS [RowCount]\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[AlarmHistory] AS AH\r\nJOIN \r\n    [LogRhythmEMDB].[dbo].[Person] AS P ON AH.[PersonID] = P.[PersonID]\r\nWHERE \r\n    P.[FullName] = 'MacArthur, Charlie'\r\n    AND (AH.[Comments] LIKE '%closed%' OR AH.[Comments] LIKE '%open%')\r\n    AND DATEPART(WEEK, AH.[DateInserted]) = DATEPART(WEEK, GETDATE())\r\nGROUP BY \r\n    CASE \r\n        WHEN AH.[Comments] LIKE '%closed%' THEN 'Closed'\r\n        WHEN AH.[Comments] LIKE '%open%' THEN 'Open'\r\n        ELSE 'Other'\r\n    END;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "CommentGroup": "Action",
+              "RowCount": "Number Of Time Performed"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_EMDB_DATABASE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AlarmID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 261
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_EMDB_DATABASE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    [LogRhythm_Alarms].[dbo].AlarmMetrics.AlarmID,\r\n    Name,\r\n    COALESCE(CONVERT(varchar(5), ABS(DATEDIFF(day, (CAST(OpenedOn AS datetime) - CAST(GeneratedOn AS datetime)), '1900-01-01'))) + ':' + CONVERT(varchar(10), (CAST(OpenedOn AS datetime) - CAST(GeneratedOn AS datetime)), 108), '00:00:00:00') AS 'Response Time',\r\n    COALESCE(CONVERT(varchar(5), ABS(DATEDIFF(day, (CAST(ClosedOn AS datetime) - CAST(GeneratedOn AS datetime)), '1900-01-01'))) + ':' + CONVERT(varchar(10), (CAST(ClosedOn AS datetime) - CAST(GeneratedOn AS datetime)), 108), '00:00:00:00') AS 'Resolution Time',\r\n    GeneratedOn,\r\n    OpenedOn,\r\n    ClosedOn,\r\n    (CONVERT(nvarchar, CASE WHEN AlarmStatus = 4 THEN 'AutoClosed' WHEN AlarmStatus = 8 THEN 'Reported' WHEN AlarmStatus = 6 THEN 'Resolved' WHEN AlarmStatus = 5 THEN 'FalsePositive' WHEN AlarmStatus = 0 THEN 'New' WHEN AlarmStatus = 1 THEN 'OpenAlarm' WHEN AlarmStatus = 9 THEN 'Monitor' END)) AS AlarmStatus,\r\n    FullName\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].AlarmMetrics\r\nJOIN \r\n    [LogRhythm_Alarms].[dbo].[Alarm] ON Alarm.AlarmID = AlarmMetrics.AlarmID \r\nJOIN \r\n    LogRhythmEMDB.dbo.AlarmRule ON Alarm.AlarmRuleID = AlarmRule.AlarmRuleID\r\nLEFT JOIN \r\n    [LogRhythmEMDB].[dbo].[Person] ON Person.PersonID = LastPersonID\r\nWHERE \r\n    $__timeFilter(AlarmDate)\r\n    AND Name LIKE 'AIE%'\r\nORDER BY \r\n    [LogRhythm_Alarms].[dbo].AlarmMetrics.AlarmID DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Alarm SLA",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "AlarmID": true,
+              "ClosedOn": true,
+              "FullName": true,
+              "OpenedOn": true
+            },
+            "indexByName": {
+              "AlarmID": 0,
+              "AlarmStatus": 7,
+              "ClosedOn": 6,
+              "FullName": 8,
+              "GeneratedOn": 2,
+              "Name": 1,
+              "OpenedOn": 5,
+              "Resolution Time": 4,
+              "Response Time": 3
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Alarming And KPI Dashboard",
+  "uid": "e597ff4a-f99a-465f-a6d0-648b5e68c7cf",
+  "version": 27,
+  "weekStart": ""
+}
