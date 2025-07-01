@@ -1,0 +1,2760 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ELASTICSEARCH",
+      "label": "Elasticsearch",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "elasticsearch",
+      "pluginName": "Elasticsearch"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table-old",
+      "name": "Table (old)",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 15
+              },
+              {
+                "color": "#EAB839",
+                "value": 25
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 35
+              },
+              {
+                "color": "#EF843C",
+                "value": 45
+              },
+              {
+                "color": "#E24D42",
+                "value": 55
+              },
+              {
+                "color": "#1F78C1",
+                "value": 65
+              },
+              {
+                "color": "#BA43A9",
+                "value": 75
+              },
+              {
+                "color": "#705DA0",
+                "value": 85
+              },
+              {
+                "color": "#508642",
+                "value": 95
+              },
+              {
+                "color": "#CCA300",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Avg Risk"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Max Risk"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Min Risk"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "missing": 2
+              },
+              "type": "avg"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "max"
+            }
+          ],
+          "query": "",
+          "refId": "B",
+          "timeField": "normalDate"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "min"
+            }
+          ],
+          "query": "",
+          "refId": "C",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Org Risk %",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 35
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 50
+              },
+              {
+                "color": "#EF843C",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Avg Risk"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Max Risk"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Min Risk"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "hideTimeOverride": false,
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "missing": 2
+              },
+              "type": "avg"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "max"
+            }
+          ],
+          "query": "",
+          "refId": "B",
+          "timeField": "normalDate"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "priority",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "min"
+            }
+          ],
+          "query": "",
+          "refId": "C",
+          "timeField": "normalDate"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Org Risk %",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Log Sources",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(23, 23, 23)",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 4,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  COUNT(*) as Count\nFROM\n  LogRhythmEMDB.dbo.MsgSource with (NOLOCK)\nWHERE\n  RecordStatus = 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Total Log Sources",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Log Sources",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(23, 23, 23)",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "id": 5,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  COUNT(*) as Count\nFROM\n  LogRhythmEMDB.dbo.MsgSource with (NOLOCK)\nWHERE\n  RecordStatus = 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Total Log Sources",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "All Logs",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 7,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "count",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Big Data",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 9
+      },
+      "id": 46,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "msgClassName:* AND isEvent:\"true\"",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "title": "Classified Events",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 9
+      },
+      "id": 47,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "msgClassName:* AND isEvent:\"true\"",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Classified Events",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${DS_ELASTICSEARCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "All Logs",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 8,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "normalDate",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${DS_ELASTICSEARCH}"
+          },
+          "metrics": [
+            {
+              "field": "count",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "normalDate"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Big Data",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Alarms",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 500
+              },
+              {
+                "color": "light-red",
+                "value": 1000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 10,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tcount(*) as Count\nFROM\n  \tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK)\n  \t  JOIN\n\t  LogRhythmEMDB.dbo.AlarmRule ar\n\t    ON a.AlarmRuleID = ar.AlarmRuleID\n    AND\n  $__timeFilter(DateInserted)",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Alarms",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Alarms",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 500
+              },
+              {
+                "color": "light-red",
+                "value": 1000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 11,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n\tcount(*) as Count\nFROM\n  \tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK)\n  \t  JOIN\n\t  LogRhythmEMDB.dbo.AlarmRule ar\n\t    ON a.AlarmRuleID = ar.AlarmRuleID\nWHERE\n  ar.AlarmType = 5\n    AND\n  $__timeFilter(DateInserted)",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Alarms",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 28,
+      "interval": "",
+      "showHeader": true,
+      "sort": {
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:103",
+          "alias": "Criticallity",
+          "align": "auto",
+          "colorMode": "cell",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "mappingType": 2,
+          "pattern": "Alarm_Priority",
+          "rangeMaps": [],
+          "thresholds": [
+            ""
+          ],
+          "type": "string",
+          "valueMaps": []
+        },
+        {
+          "$$hashKey": "object:104",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "#5794F2",
+            "rgba(237, 129, 40, 0.89)",
+            "#F2495C"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Count",
+          "thresholds": [
+            "400"
+          ],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:105",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "#B877D9",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTT",
+          "thresholds": [
+            "1"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:106",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "#56A64B",
+            "#A352CC",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTD",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:107",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTR",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n\tmsg.Alarm_Priority,\r\n\tAVG(amsg.TTD) avgTTD,\r\n\tAVG(amsg.TTR) avgTTR,\r\n\tCOUNT(*) as Count\r\nFROM\r\n  (SELECT\r\n\tCASE \r\n\t\tWHEN Priority >= 90 THEN 'Critical'\r\n\t\tWHEN Priority BETWEEN 80 and 89 THEN 'High'\r\n\t\tWHEN Priority BETWEEN 65 and 79 THEN 'Medium'\r\n\t\tWHEN Priority BETWEEN 50 and 64 THEN 'Low'\r\n\t\tWHEN Priority < 50 THEN 'Very Low'\r\n\tEND AS Alarm_Priority,\r\n\tMsgID\r\nFROM \r\n\tLogRhythm_Events.dbo.Msg with (NOLOCK)) msg\r\n\t  JOIN\r\n\t(SELECT \r\n\t\ta.DateInserted,\r\n\t\tatm.MARCMsgID,\r\n\t\ta.AlarmID,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.OpenedOn) TTT,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.InvestigatedOn) TTD,\r\n\t\tDATEDIFF(MINUTE,am.InvestigatedOn,am.ClosedOn) TTR\r\n\tFROM \r\n\t\tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK) \r\n\t\t\tJOIN \r\n\t\tLogRhythm_Alarms.dbo.AlarmToMARCMsg atm with (NOLOCK) \r\n\t\t\tON a.AlarmID = atm.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythm_Alarms].[dbo].[AlarmMetrics] am with (NOLOCK) \r\n\t\t\tON a.AlarmID = am.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythmEMDB].[dbo].AlarmRule ar\r\n\t\t  ON a.AlarmRuleID = ar.AlarmRuleID \r\n\t\tWHERE \r\n\t\t  ar.[AlarmType] = 5\r\n\t\t    and\r\n      $__timeFilter(a.DateInserted)) amsg\r\n\t\tON amsg.MARCMsgID = msg.MsgID\r\nGROUP BY\r\n\tmsg.Alarm_Priority\r\nORDER BY \r\n\tCASE msg.Alarm_Priority\r\n\t\tWHEN 'Critical' THEN 1\r\n\t\tWHEN 'High' THEN 2\r\n\t\tWHEN 'Medium' THEN 3\r\n\t\tWHEN 'Low' THEN 4\r\n\t\tWHEN 'Very Low' THEN 5\r\n\tEND",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTD"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTR"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 29,
+      "interval": "",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n\tmsg.Alarm_Priority,\r\n\tAVG(amsg.TTD) avgTTD,\r\n\tAVG(amsg.TTR) avgTTR,\r\n\tCOUNT(*) as Count\r\nFROM\r\n  (SELECT\r\n\tCASE \r\n\t\tWHEN Priority >= 90 THEN 'Critical'\r\n\t\tWHEN Priority BETWEEN 80 and 89 THEN 'High'\r\n\t\tWHEN Priority BETWEEN 65 and 79 THEN 'Medium'\r\n\t\tWHEN Priority BETWEEN 50 and 64 THEN 'Low'\r\n\t\tWHEN Priority < 50 THEN 'Very Low'\r\n\tEND AS Alarm_Priority,\r\n\tMsgID\r\nFROM \r\n\tLogRhythm_Events.dbo.Msg with (NOLOCK)) msg\r\n\t  JOIN\r\n\t(SELECT \r\n\t\ta.DateInserted,\r\n\t\tatm.MARCMsgID,\r\n\t\ta.AlarmID,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.OpenedOn) TTT,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.InvestigatedOn) TTD,\r\n\t\tDATEDIFF(MINUTE,am.InvestigatedOn,am.ClosedOn) TTR\r\n\tFROM \r\n\t\tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK) \r\n\t\t\tJOIN \r\n\t\tLogRhythm_Alarms.dbo.AlarmToMARCMsg atm with (NOLOCK) \r\n\t\t\tON a.AlarmID = atm.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythm_Alarms].[dbo].[AlarmMetrics] am with (NOLOCK) \r\n\t\t\tON a.AlarmID = am.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythmEMDB].[dbo].AlarmRule ar\r\n\t\t  ON a.AlarmRuleID = ar.AlarmRuleID \r\n\t\tWHERE \r\n\t\t  ar.[AlarmType] = 5\r\n\t\t    and\r\n      $__timeFilter(a.DateInserted)) amsg\r\n\t\tON amsg.MARCMsgID = msg.MsgID\r\nGROUP BY\r\n\tmsg.Alarm_Priority\r\nORDER BY \r\n\tCASE msg.Alarm_Priority\r\n\t\tWHEN 'Critical' THEN 1\r\n\t\tWHEN 'High' THEN 2\r\n\t\tWHEN 'Medium' THEN 3\r\n\t\tWHEN 'Low' THEN 4\r\n\t\tWHEN 'Very Low' THEN 5\r\n\tEND",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Alarms",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Cases",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(57, 30, 217)"
+              },
+              {
+                "color": "light-orange",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 13,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] with (NOLOCK)\r\nWHERE\r\n  $__timeFilter([DateCreated])",
+          "refId": "A"
+        }
+      ],
+      "title": "Cases",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Cases",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-orange"
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 14,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] with (NOLOCK)\r\nWHERE\r\n  $__timeFilter([DateCreated])",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Cases",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Incidents",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple"
+              },
+              {
+                "color": "dark-orange",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 28
+      },
+      "id": 19,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.Name = 'Incident'",
+          "refId": "A"
+        }
+      ],
+      "title": "Incidents",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Closed",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-yellow"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 28
+      },
+      "id": 21,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.IsClosedStatus = 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Closed Cases",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Opened",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 28
+      },
+      "id": 23,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "\r\nSELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.IsClosedStatus = 0 ",
+          "refId": "A"
+        }
+      ],
+      "title": "Open Cases",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Opened",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 28
+      },
+      "id": 26,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "\r\nSELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.IsClosedStatus = 0 ",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Open Cases",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Closed",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-red"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 28
+      },
+      "id": 25,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.IsClosedStatus = 1",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Closed Cases",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Incidents",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(119, 176, 217)"
+              },
+              {
+                "color": "dark-orange",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 28
+      },
+      "id": 24,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n count(*) as Count\r\nFROM\r\n  \t[LogRhythm_CMDB].[dbo].[Case] c with (NOLOCK)\r\n  \tjoin \r\n  \tLogRhythm_CMDB.dbo.CaseStatus cs\r\n  \tON c.CaseStatusID = cs.CaseStatusID\r\nWHERE\r\n  $__timeFilter([DateCreated]) AND cs.Name = 'Incident'",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Incidents",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "id": 43,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT TOP 100 [Owner], [Case Collaborators],  (SELECT DATEDIFF_BIG (ss, CAST([Date Earliest Evidence] as datetime), CAST([Date Created]as datetime))) TTD,  (SELECT DATEDIFF_BIG(ss, CAST([Date Incident] as datetime), CAST([Date Mitigated] as datetime))) TTR,  (SELECT DATEDIFF(minute, CAST([Date Earliest Evidence] as datetime),CAST([Date Created] as datetime))) TTQ,  (SELECT DATEDIFF(minute, CAST([Date Created] as datetime),CAST([Date Incident] as datetime))) TTI,  (SELECT DATEDIFF(minute, CAST([Date Incident] as datetime),CAST([Date Mitigated] as datetime))) TTM,  (SELECT DATEDIFF(minute, CAST([Date Created] as datetime),CAST([Date Mitigated] as datetime))) TTV FROM [LogRhythm_CMDB].[dbo].[vw_Cases] WHERE\n  $__timeFilter([Date Created])",
+          "refId": "A"
+        }
+      ],
+      "title": "All Cases KPI Last Day",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "id": 44,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT TOP 100 [Owner], [Case Collaborators],  (SELECT DATEDIFF_BIG (ss, CAST([Date Earliest Evidence] as datetime), CAST([Date Created]as datetime))) TTD,  (SELECT DATEDIFF_BIG(ss, CAST([Date Incident] as datetime), CAST([Date Mitigated] as datetime))) TTR,  (SELECT DATEDIFF(minute, CAST([Date Earliest Evidence] as datetime),CAST([Date Created] as datetime))) TTQ,  (SELECT DATEDIFF(minute, CAST([Date Created] as datetime),CAST([Date Incident] as datetime))) TTI,  (SELECT DATEDIFF(minute, CAST([Date Incident] as datetime),CAST([Date Mitigated] as datetime))) TTM,  (SELECT DATEDIFF(minute, CAST([Date Created] as datetime),CAST([Date Mitigated] as datetime))) TTV FROM [LogRhythm_CMDB].[dbo].[vw_Cases] WHERE\n  $__timeFilter([Date Created])",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "All Cases KPI Last Day",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 42,
+      "pluginVersion": "6.4.3",
+      "showHeader": true,
+      "sort": {
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:735",
+          "alias": "",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "mappingType": 1,
+          "pattern": "Priority",
+          "type": "string",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:777",
+              "text": "Priority 1",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:778",
+              "text": "Priority 2",
+              "value": "2"
+            },
+            {
+              "$$hashKey": "object:779",
+              "text": "Priority 3",
+              "value": "3"
+            },
+            {
+              "$$hashKey": "object:780",
+              "text": "Priority 4",
+              "value": "4"
+            },
+            {
+              "$$hashKey": "object:781",
+              "text": "Priority 5",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:736",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Count",
+          "thresholds": [
+            "0"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:807",
+              "text": "Priority 1",
+              "value": "P1"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:737",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "#3274D9",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTR",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:738",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "#E02F44",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTT",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:739",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTQ",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:857",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTI",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:868",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTM",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:879",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTV",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:890",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTD",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:901",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTR",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  [Priority],\n  AVG(DATEDIFF(MiNute,alm.[GeneratedOn],alm.[OpenedOn])) avgTTT,\n  AVG(DATEDIFF(MiNute,alm.[GeneratedOn],c.[DateCreated])) avgTTQ,\n  AVG(DATEDIFF(minute,c.[DateCreated],c.[DateIncident])) avgTTI,\n  AVG(DATEDIFF(minute,c.[DateIncident],c.[DateMitigated])) avgTTM,\n  AVG(DATEDIFF(MiNute,c.[DateMitigated],c.[DateClosed])) avgTTV,\n  AVG(DATEDIFF(MiNute,c.[DateEarliestEvidence],c.[DateCreated])) avgTTD,\n\tAVG(DATEDIFF(minute,c.[DateCreated],c.[DateMitigated])) avgTTR,\n  COUNT(*) as Count\n FROM \n\tLogRhythm_CMDB.dbo.[Case] c with (NOLOCK)\n\tJOIN\n  (SELECT atc.CaseID,am.GeneratedOn,am.OpenedOn,am.InvestigatedOn,am.ClosedOn FROM [LogRhythm_Alarms].[dbo].[AlarmToCase] atc JOIN [LogRhythm_Alarms].[dbo].[AlarmMetrics] am ON atc.AlarmID = am.AlarmID) alm\n    ON c.[CaseID] = alm.[CaseID]\nWHERE  $__timeFilter([DateCreated])\nGROUP BY\n  [Priority]\nORDER BY\n  [Priority] ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Cases Last Day",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 45,
+      "pluginVersion": "6.4.3",
+      "showHeader": true,
+      "sort": {
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:735",
+          "alias": "",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "mappingType": 1,
+          "pattern": "Priority",
+          "type": "string",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:777",
+              "text": "Priority 1",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:778",
+              "text": "Priority 2",
+              "value": "2"
+            },
+            {
+              "$$hashKey": "object:779",
+              "text": "Priority 3",
+              "value": "3"
+            },
+            {
+              "$$hashKey": "object:780",
+              "text": "Priority 4",
+              "value": "4"
+            },
+            {
+              "$$hashKey": "object:781",
+              "text": "Priority 5",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:736",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Count",
+          "thresholds": [
+            "0"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:807",
+              "text": "Priority 1",
+              "value": "P1"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:737",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "#3274D9",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTR",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:738",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "#E02F44",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTT",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:739",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTQ",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:857",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTI",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:868",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTM",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:879",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTV",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:890",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTD",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        },
+        {
+          "$$hashKey": "object:901",
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "avgTTR",
+          "thresholds": [],
+          "type": "number",
+          "unit": "m"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  [Priority],\n  AVG(DATEDIFF(MiNute,alm.[GeneratedOn],alm.[OpenedOn])) avgTTT,\n  AVG(DATEDIFF(MiNute,alm.[GeneratedOn],c.[DateCreated])) avgTTQ,\n  AVG(DATEDIFF(minute,c.[DateCreated],c.[DateIncident])) avgTTI,\n  AVG(DATEDIFF(minute,c.[DateIncident],c.[DateMitigated])) avgTTM,\n  AVG(DATEDIFF(MiNute,c.[DateMitigated],c.[DateClosed])) avgTTV,\n  AVG(DATEDIFF(MiNute,c.[DateEarliestEvidence],c.[DateCreated])) avgTTD,\n\tAVG(DATEDIFF(minute,c.[DateCreated],c.[DateMitigated])) avgTTR,\n  COUNT(*) as Count\n FROM \n\tLogRhythm_CMDB.dbo.[Case] c with (NOLOCK)\n\tJOIN\n  (SELECT atc.CaseID,am.GeneratedOn,am.OpenedOn,am.InvestigatedOn,am.ClosedOn FROM [LogRhythm_Alarms].[dbo].[AlarmToCase] atc JOIN [LogRhythm_Alarms].[dbo].[AlarmMetrics] am ON atc.AlarmID = am.AlarmID) alm\n    ON c.[CaseID] = alm.[CaseID]\nWHERE  $__timeFilter([DateCreated])\nGROUP BY\n  [Priority]\nORDER BY\n  [Priority] ASC",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "10d",
+      "title": "Cases Last Day",
+      "transform": "table",
+      "type": "table-old"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2025: SOC Journey Report",
+  "uid": "ZRqU-PH4k",
+  "version": 17,
+  "weekStart": ""
+}

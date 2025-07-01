@@ -1,0 +1,2917 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    },
+    {
+      "name": "DS_TELEGRAF",
+      "label": "telegraf",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER-1",
+      "label": "Microsoft SQL Server-1",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "nJKKR5m4k"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "nJKKR5m4k"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "SOC KPIs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 15
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Time To Response"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Time To Close"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 0,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT\r\n       DateDIFF(MI,A.AlarmDate,AC.DateCreated) AS 'Average Time To Response'\r\n\t\t , (SELECT DateDIFF(MI,A.AlarmDate,IC.DateClosed) FROM LogRhythm_CMDB.dbo.\"Case\" IC WHERE IC.CaseID=AC.CaseID) AS 'Average Time To Close'\r\n\t\t , (SELECT COUNT(*) from LogRhythm_Alarms.dbo.Alarm a with (NOLOCK) JOIN LogRhythmEMDB.dbo.AlarmRule ar ON a.AlarmRuleID = ar.AlarmRuleID Where ar.AlarmType = 5 AND $__timeFilter(A.AlarmDate)) AS 'Count of Alerts'\r\nFROM LogRhythm_Alarms.dbo.Alarm A, LogRhythm_Alarms.dbo.AlarmToCase AC, LogRhythm_CMDB.dbo.\"Case\" C, LogRhythmEMDB.dbo.Person P\r\n\t\t, LogRhythmEMDB.dbo.AlarmRule AR\r\nWHERE A.AlarmID = AC.AlarmID\r\nAND A.AlarmRuleID = AR.AlarmRuleID\r\nAND AC.CaseID = C.CaseID\r\nAND $__timeFilter(A.AlarmDate)",
+          "refId": "B"
+        }
+      ],
+      "title": "SOC KPI",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Time To Response"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Time To Close"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 9,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n       DateDIFF(MI,A.AlarmDate,AC.DateCreated) AS 'Average Time To Response'\r\n\t\t , (SELECT DateDIFF(MI,A.AlarmDate,IC.DateClosed) FROM LogRhythm_CMDB.dbo.\"Case\" IC WHERE IC.CaseID=AC.CaseID) AS 'Average Time To Close'\r\n\t\t , (SELECT COUNT(*) from LogRhythm_Alarms.dbo.Alarm a with (NOLOCK) JOIN LogRhythmEMDB.dbo.AlarmRule ar ON a.AlarmRuleID = ar.AlarmRuleID Where ar.AlarmType = 5 AND A.AlarmDate BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo()))) AS 'Count of Alerts'\r\nFROM LogRhythm_Alarms.dbo.Alarm A, LogRhythm_Alarms.dbo.AlarmToCase AC, LogRhythm_CMDB.dbo.\"Case\" C, LogRhythmEMDB.dbo.Person P\r\n\t\t, LogRhythmEMDB.dbo.AlarmRule AR\r\nWHERE A.AlarmID = AC.AlarmID\r\nAND A.AlarmRuleID = AR.AlarmRuleID\r\nAND AC.CaseID = C.CaseID\r\nAND A.AlarmDate BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo()))",
+          "refId": "A"
+        }
+      ],
+      "title": "SOC KPI Last Month",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 8,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# SOC KPI \n___\n1. The analyst should respond to Alarm with **15 minutes**.\n2. The analyst should close the Alarm after investigation within **60 minutes** for Critical Alerts.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "SOC KPI Explanation ",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "nJKKR5m4k"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 10,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "nJKKR5m4k"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms Overall",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "gauge",
+              "valueDisplayMode": "text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 100
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 400
+              },
+              {
+                "color": "#EF843C",
+                "value": 800
+              },
+              {
+                "color": "#E24D42",
+                "value": 1000
+              },
+              {
+                "color": "#1F78C1",
+                "value": 5000
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Number"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Alarm Priority"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-green",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 9
+      },
+      "id": 51,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  Priority,\n  COUNT(*) as Count\nFROM\n   (SELECT alm.[AlarmDate], alm.AlarmStatus,atm.MARCMsgID FROM [LogRhythm_Alarms].[dbo].[Alarm] alm JOIN [LogRhythm_Alarms].dbo.AlarmToMARCMsg atm ON alm.AlarmID = atm.AlarmID) almm\n\t\tJOIN\n\t(SELECT \n\t\tMsgID,\n\t\t(CASE WHEN Priority >= 90 THEN 'Critical' WHEN Priority BETWEEN 75 AND 89 THEN 'Very High' WHEN Priority BETWEEN 65 AND 74 THEN 'High' WHEN Priority BETWEEN 50 AND 64 THEN 'Medium' WHEN Priority < 50 THEN 'Low' END) AS Priority \n\tFROM LogRhythm_Events.dbo.Msg) emsg \n\t\t\tON emsg.MsgID = almm.MARCMsgID\n\tWHERE\n  $__timeFilter(almm.AlarmDate)\nGROUP BY\n  Priority\nORDER BY\n  CASE Priority\n    WHEN 'Critical' THEN 1\n    WHEN 'Very High' THEN 2\n    WHEN 'High' THEN 3\n    WHEN 'Medium' THEN 4\n    WHEN 'Low' THEN 5\n  END",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "24h",
+      "title": "Alarm Priority Last Day",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "gauge",
+              "valueDisplayMode": "text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 100
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 400
+              },
+              {
+                "color": "#EF843C",
+                "value": 800
+              },
+              {
+                "color": "#E24D42",
+                "value": 1000
+              },
+              {
+                "color": "#1F78C1",
+                "value": 5000
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total Number"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Alarm Priority"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "light-blue",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Priority"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 9,
+        "y": 9
+      },
+      "id": 52,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  Priority,\n  COUNT(*) as Count\nFROM\n   (SELECT alm.[AlarmDate], alm.AlarmStatus,atm.MARCMsgID FROM [LogRhythm_Alarms].[dbo].[Alarm] alm JOIN [LogRhythm_Alarms].dbo.AlarmToMARCMsg atm ON alm.AlarmID = atm.AlarmID) almm\n\t\tJOIN\n\t(SELECT \n\t\tMsgID,\n\t\t(CASE WHEN Priority >= 90 THEN 'Critical' WHEN Priority BETWEEN 75 AND 89 THEN 'Very High' WHEN Priority BETWEEN 65 AND 74 THEN 'High' WHEN Priority BETWEEN 50 AND 64 THEN 'Medium' WHEN Priority < 50 THEN 'Low' END) AS Priority \n\tFROM LogRhythm_Events.dbo.Msg) emsg \n\t\t\tON emsg.MsgID = almm.MARCMsgID\n\tWHERE\n  $__timeFilter(almm.AlarmDate)\nGROUP BY\n  Priority\nORDER BY\n  CASE Priority\n    WHEN 'Critical' THEN 1\n    WHEN 'Very High' THEN 2\n    WHEN 'High' THEN 3\n    WHEN 'Medium' THEN 4\n    WHEN 'Low' THEN 5\n  END",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "30d",
+      "title": "Alarm Priority Last Month",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 9
+      },
+      "id": 53,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Alarms Criticality\n___\n1. Critical >90\n2. Very High (75 TO 89)\n3. High (65 TO 74)\n4. Medium (50 TO 64)\n5. Low <50",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Alarms by Criticality ",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 4,
+        "x": 0,
+        "y": 17
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "table",
+          "rawSql": "SELECT        COUNT(*) AS \"Use Cases\"\r\nFROM            AIERule INNER JOIN\r\n                         AlarmRule ON AIERule.AlarmRuleID = AlarmRule.AlarmRuleID INNER JOIN\r\n                         AIERuleToEngine ON AIERule.AIERuleID = AIERuleToEngine.AIERuleID\r\n\t\t\t\t\t\t WHERE AIERuleToEngine.Enabled =1 AND AlarmRule.Enabled =1",
+          "refId": "A"
+        }
+      ],
+      "title": "Use Cases with Alarms Enabled",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 4,
+        "x": 4,
+        "y": 17
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT        COUNT(*) AS \"Use Cases\"\r\nFROM            AIERule INNER JOIN\r\n                         AlarmRule ON AIERule.AlarmRuleID = AlarmRule.AlarmRuleID INNER JOIN\r\n                         AIERuleToEngine ON AIERule.AIERuleID = AIERuleToEngine.AIERuleID\r\n\t\t\t\t\t\t WHERE AIERuleToEngine.Enabled =1 AND AlarmRule.Enabled =0",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Use Cases without Alarms Enabled",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Use Cases",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "purple",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 4,
+        "x": 8,
+        "y": 17
+      },
+      "id": 45,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "aie",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "#_of_Enabled_Rules"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "All Enabled Use Cases",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Alarms",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 500
+              },
+              {
+                "color": "light-red",
+                "value": 1000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 17
+      },
+      "id": 46,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n\tcount(*) as Count\nFROM\n  \tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK)\n  \t  JOIN\n\t  LogRhythmEMDB.dbo.AlarmRule ar\n\t    ON a.AlarmRuleID = ar.AlarmRuleID\nWHERE\n  ar.AlarmType = 5\n    AND\n  $__timeFilter(DateInserted)",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 17
+      },
+      "id": 44,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Alarms\n___\n1. Use Cases with Alarms Enabled\n2. Use Cases without Alarms Enabled\n3. All Use Cases Enabled\n4. Sum of Alarms ",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Alarms",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 6,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 20,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 18,
+        "x": 0,
+        "y": 27
+      },
+      "id": 40,
+      "options": {
+        "graph": {},
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT        COUNT(DateStructUpdated) As \"Count\", $__timeGroup(DateStructUpdated, '1d') AS time\nFROM            AIERule INNER JOIN\n                         AlarmRule ON AIERule.AlarmRuleID = AlarmRule.AlarmRuleID INNER JOIN\n                         AIERuleToEngine ON AIERule.AIERuleID = AIERuleToEngine.AIERuleID\n\t\t\t\t\t\t WHERE AIERuleToEngine.Enabled =1 AND AlarmRule.Enabled =1 and  $__timeFilter(DateStructUpdated)\n\t\t\t\t\t\t  GROUP BY $__timeGroup(DateStructUpdated, '1d')",
+          "refId": "A"
+        }
+      ],
+      "title": "Use Cases Creation",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 6,
+        "x": 18,
+        "y": 27
+      },
+      "id": 48,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Alarms\n___\n1. Use Cases creation Trend",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Use Cases Creation Trend",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 8,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 18,
+        "x": 0,
+        "y": 39
+      },
+      "id": 41,
+      "options": {
+        "graph": {},
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min",
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "time_series",
+          "rawSql": "select $__timeGroup(AlarmDate, '1d') AS time, COUNT(AlarmDate)\r\nfrom [LogRhythm_Alarms].[dbo].[Alarm]\r\nwhere $__timeFilter(AlarmDate)\r\ngroup by $__timeGroup(AlarmDate, '1d')\r\norder by $__timeGroup(AlarmDate, '1d')",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms Trend",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 18,
+        "y": 39
+      },
+      "id": 49,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Alarms\n___\n1. Alarms Triggered Trend",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Alarms Triggered Trend",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 9,
+        "x": 0,
+        "y": 48
+      },
+      "id": 12,
+      "options": {
+        "displayLabels": [
+          "percent",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Closed Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  $__timeFilter([DateInserted]) and AlarmStatus >= 4\r\n  ",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Open Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n $__timeFilter([DateInserted]) and AlarmStatus < 4",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Alarms Status Percentage",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 9,
+        "x": 9,
+        "y": 48
+      },
+      "id": 14,
+      "options": {
+        "displayLabels": [
+          "percent",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Open Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n [DateInserted] BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo())) and AlarmStatus < 4\r\n  ",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Closed Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  [DateInserted] BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo())) and AlarmStatus >= 4",
+          "refId": "C"
+        }
+      ],
+      "title": "Last Month Alarms Status Percentage",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 6,
+        "x": 18,
+        "y": 48
+      },
+      "id": 50,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Alarms\n___\n1. Open Vs Closed Alarms",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Open Vs Closed Alarms",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "#EAB839",
+                "value": 5000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 1000000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 57
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Total of Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  $__timeFilter([DateInserted])",
+          "refId": "A"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Count of Closed Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  $__timeFilter([DateInserted]) and AlarmStatus >= 4",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Opened Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  $__timeFilter([DateInserted])and AlarmStatus < 4",
+          "refId": "C"
+        }
+      ],
+      "title": "Alarms Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "purple",
+                "value": 5000
+              },
+              {
+                "color": "blue",
+                "value": 100000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 9,
+        "y": 57
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Total of Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  [DateInserted] BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo()))",
+          "refId": "A"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Count of Closed Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  [DateInserted] BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo())) and AlarmStatus >= 4",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT Count(*) As 'Opened Alarms'\r\n  FROM [LogRhythm_Alarms].[dbo].[Alarm]\r\nWHERE\r\n  [DateInserted] BETWEEN (dateadd(month, -1, $__timeFrom())) and (dateadd(month, -1, $__timeTo())) and AlarmStatus < 4",
+          "refId": "C"
+        }
+      ],
+      "title": "Alarms Count for last month",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "nJKKR5m4k"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 65
+      },
+      "id": 20,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "nJKKR5m4k"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Incident Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(255, 116, 39)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 7,
+        "x": 0,
+        "y": 66
+      },
+      "id": 22,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT DISTINCT\r\n\tcount(DISTINCT C.CaseNumber) as Count\r\nFROM\r\n  \tLogRhythm_CMDB.dbo.[Case] C\r\nWhere C.CaseStatusID IN (3,4,5)\r\n    --AND CT.TagID <> 28\r\n    AND $__timeFilter(C.DateCreated)",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Incidents Number",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(162, 0, 19)",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 6,
+        "x": 7,
+        "y": 66
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  LogRhythm_CMDB.dbo.[Case].CaseNumber as value,\r\n  Tag.Tag as metric\r\n  \r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case], LogRhythm_CMDB.dbo.CaseToTag, LogRhythm_CMDB.dbo.Tag\r\nWHERE\r\n        LogRhythm_CMDB.dbo.\"Case\".CaseID = LogRhythm_CMDB.dbo.CaseToTag.CaseID\r\n\t  AND LogRhythm_CMDB.dbo.CaseToTag.TagID = LogRhythm_CMDB.dbo.Tag.TagID\r\n          AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,5)\r\n\t  AND Tag.Tag LIKE '%Security Breach%'\r\n \t  AND $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Security Breach Incident",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 10,
+        "x": 13,
+        "y": 66
+      },
+      "id": 24,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  COUNT(LogRhythm_CMDB.dbo.[Case].[CaseStatusID]) as value,\r\n  'Open(Created)' as metric\r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case]\r\nWHERE\r\n  $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\n    AND LogRhythm_CMDB.dbo.[Case].CaseStatusID = 3\r\n  GROUP BY LogRhythm_CMDB.dbo.[Case].[Name], LogRhythm_CMDB.dbo.[Case].DateCreated\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "hide": false,
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  COUNT(LogRhythm_CMDB.dbo.[Case].[CaseStatusID]) as value,\r\n  'Resolved' as metric\r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case]\r\nWHERE\r\n  $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\n    AND LogRhythm_CMDB.dbo.[Case].CaseStatusID = 5\r\n  GROUP BY LogRhythm_CMDB.dbo.[Case].[Name], LogRhythm_CMDB.dbo.[Case].DateCreated\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "hide": false,
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  COUNT(LogRhythm_CMDB.dbo.[Case].[CaseStatusID]) as value,\r\n  'Mitigated' as metric\r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case]\r\nWHERE\r\n  $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\n    AND LogRhythm_CMDB.dbo.[Case].CaseStatusID = 4\r\n  GROUP BY LogRhythm_CMDB.dbo.[Case].[Name], LogRhythm_CMDB.dbo.[Case].DateCreated\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "C"
+        }
+      ],
+      "title": "Incident Status",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "yellow",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "noValue": "-",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date Created"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date Closed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IncidentDate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Incident Status"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 77
+      },
+      "id": 26,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "CaseStatusID"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "rawSql": "SELECT LogRhythm_CMDB.dbo.[Case].[Name] AS [Incident Name]\r\n\t   ,LogRhythmEMDB.dbo.Person.FullName AS [Full Name]\r\n\t   ,ISNULL(LogRhythm_CMDB.dbo.[Case].Resolution,'') AS Resolution\r\n     ,CASE WHEN LogRhythm_CMDB.dbo.[Case].CaseStatusID = 3 THEN 'Incident'\r\n            WHEN LogRhythm_CMDB.dbo.[Case].CaseStatusID = 5 THEN 'Resolved'\r\n            ELSE 'Mitigated'END AS [Incident Status]\r\n     -- ,LogRhythm_CMDB.dbo.[Case].CaseStatusID\r\nFROM LogRhythm_CMDB.dbo.[Case], LogRhythmEMDB.dbo.Person\r\nWHERE LogRhythm_CMDB.dbo.[Case].PersonID = LogRhythmEMDB.dbo.Person.PersonID\r\n      AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,4,5)\r\n      AND $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Incident Status",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 266
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Incident Tag"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 816
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 17,
+        "x": 0,
+        "y": 87
+      },
+      "id": 28,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "table",
+          "rawSql": "SELECT [Case Tags] As 'Incident Tag',COUNT([CaseNumber]) as count FROM [LogRhythm_CMDB].[dbo].[vw_Cases] \nwhere [Case Status] in ('Icident', 'Mitigated', 'Resolved') AND $__timeFilter([Date Created])\nGroup by [Case Tags]\n-- Group by [Case Tags]",
+          "refId": "A"
+        }
+      ],
+      "title": "Incident Brief",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Total number of days incident is still open for",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 19,
+        "w": 12,
+        "x": 0,
+        "y": 92
+      },
+      "id": 32,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  (DATEDIFF(DAY,LogRhythm_CMDB.dbo.[Case].DateCreated,ISNULL(LogRhythm_CMDB.dbo.[Case].DateClosed,CURRENT_TIMESTAMP))) as value,\r\n  LogRhythm_CMDB.dbo.[Case].[Name] as metric\r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case]\r\nWHERE\r\n  $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\n  AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,4)\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Total days since incident was opened",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 11,
+        "x": 13,
+        "y": 92
+      },
+      "id": 30,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  LogRhythm_CMDB.dbo.[Case].CaseNumber as value,\r\n  Tag.Tag as metric\r\n  \r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case], LogRhythm_CMDB.dbo.CaseToTag, LogRhythm_CMDB.dbo.Tag\r\nWHERE\r\n        LogRhythm_CMDB.dbo.\"Case\".CaseID = LogRhythm_CMDB.dbo.CaseToTag.CaseID\r\n\t  AND LogRhythm_CMDB.dbo.CaseToTag.TagID = LogRhythm_CMDB.dbo.Tag.TagID\r\n          AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,5)\r\n\t  AND Tag.Tag LIKE '%violation%'\r\n \t  AND $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Policy Violation Incident",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "nJKKR5m4k"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 111
+      },
+      "id": 38,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "nJKKR5m4k"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Impersonation",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Date"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Case Name"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 506
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tag"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 13,
+        "x": 0,
+        "y": 112
+      },
+      "id": 42,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "table",
+          "rawSql": "SELECT $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  LogRhythm_CMDB.dbo.[Case].Name as 'Case Name',\r\n  Tag.Tag as 'Tag',\r\n CASE WHEN  [LogRhythm_CMDB].[dbo].[Case].CaseStatusid = 1 THEN 'Created'\r\n  when [LogRhythm_CMDB].[dbo].[Case].CaseStatusid = 2 THEN 'Completed'\r\n  when [LogRhythm_CMDB].[dbo].[Case].CaseStatusid = 3 THEN 'Incident'\r\n  when [LogRhythm_CMDB].[dbo].[Case].CaseStatusid = 4 THEN 'Mitigated'\r\n  else  'Resolved' end as [Status]\r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case], LogRhythm_CMDB.dbo.CaseToTag, LogRhythm_CMDB.dbo.Tag\r\nWHERE\r\n        LogRhythm_CMDB.dbo.\"Case\".CaseID = LogRhythm_CMDB.dbo.CaseToTag.CaseID\r\n\t  AND LogRhythm_CMDB.dbo.CaseToTag.TagID = LogRhythm_CMDB.dbo.Tag.TagID\r\n          AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,5)\r\n\t  AND (Tag.Tag = 'Account impersonation' OR Tag.Tag = 'Domain impersonation')\r\n\t   \t  AND $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Impersonation",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 11,
+        "x": 13,
+        "y": 112
+      },
+      "id": 36,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "7.5.15",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\r\n  $__timeEpoch(LogRhythm_CMDB.dbo.[Case].DateCreated),\r\n  LogRhythm_CMDB.dbo.[Case].CaseNumber as value,\r\n  Tag.Tag as metric\r\n  \r\nFROM\r\n  LogRhythm_CMDB.dbo.[Case], LogRhythm_CMDB.dbo.CaseToTag, LogRhythm_CMDB.dbo.Tag\r\nWHERE\r\n        LogRhythm_CMDB.dbo.\"Case\".CaseID = LogRhythm_CMDB.dbo.CaseToTag.CaseID\r\n\t  AND LogRhythm_CMDB.dbo.CaseToTag.TagID = LogRhythm_CMDB.dbo.Tag.TagID\r\n          AND LogRhythm_CMDB.dbo.[Case].CaseStatusID IN (3,5)\r\n\t  AND (Tag.Tag = 'Account impersonation' OR Tag.Tag = 'Domain impersonation')\r\n \t  AND $__timeFilter(LogRhythm_CMDB.dbo.[Case].DateCreated)\r\nORDER BY\r\n  LogRhythm_CMDB.dbo.[Case].DateCreated ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Impersonation",
+      "transparent": true,
+      "type": "piechart"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2025: VP Dashboard Report",
+  "uid": "aIJETPgIk",
+  "version": 7,
+  "weekStart": ""
+}

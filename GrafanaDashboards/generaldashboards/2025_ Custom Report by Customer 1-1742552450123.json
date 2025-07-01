@@ -1,0 +1,1269 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TELEGRAF",
+      "label": "telegraf",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Use Cases",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 15,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_TELEGRAF}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "aie",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "#_of_Enabled_Rules"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Use Cases",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(49, 44, 31)",
+                "value": null
+              },
+              {
+                "color": "light-blue",
+                "value": 20
+              },
+              {
+                "color": "#EF843C",
+                "value": 100
+              },
+              {
+                "color": "#EAB839",
+                "value": 100
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 500
+              },
+              {
+                "color": "#E24D42",
+                "value": 1500
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTD"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTR"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 14,
+        "x": 5,
+        "y": 0
+      },
+      "id": 19,
+      "interval": "",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\r\n\tmsg.Alarm_Priority,\r\n\tAVG(amsg.TTD) avgTTD,\r\n\tAVG(amsg.TTR) avgTTR,\r\n\tCOUNT(*) as Count\r\nFROM\r\n  (SELECT\r\n\tCASE \r\n\t\tWHEN Priority >= 90 THEN 'Critical'\r\n\t\tWHEN Priority BETWEEN 80 and 89 THEN 'High'\r\n\t\tWHEN Priority BETWEEN 65 and 79 THEN 'Medium'\r\n\t\tWHEN Priority BETWEEN 50 and 64 THEN 'Low'\r\n\t\tWHEN Priority < 50 THEN 'Very Low'\r\n\tEND AS Alarm_Priority,\r\n\tMsgID\r\nFROM \r\n\tLogRhythm_Events.dbo.Msg with (NOLOCK)) msg\r\n\t  JOIN\r\n\t(SELECT \r\n\t\ta.DateInserted,\r\n\t\tatm.MARCMsgID,\r\n\t\ta.AlarmID,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.OpenedOn) TTT,\r\n\t\tDATEDIFF(MINUTE,am.GeneratedOn,am.InvestigatedOn) TTD,\r\n\t\tDATEDIFF(MINUTE,am.InvestigatedOn,am.ClosedOn) TTR\r\n\tFROM \r\n\t\tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK) \r\n\t\t\tJOIN \r\n\t\tLogRhythm_Alarms.dbo.AlarmToMARCMsg atm with (NOLOCK) \r\n\t\t\tON a.AlarmID = atm.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythm_Alarms].[dbo].[AlarmMetrics] am with (NOLOCK) \r\n\t\t\tON a.AlarmID = am.AlarmID\r\n\t\t\tJOIN\r\n\t\t[LogRhythmEMDB].[dbo].AlarmRule ar\r\n\t\t  ON a.AlarmRuleID = ar.AlarmRuleID \r\n\t\tWHERE \r\n\t\t  ar.[AlarmType] = 5\r\n\t\t    and\r\n      $__timeFilter(a.DateInserted)) amsg\r\n\t\tON amsg.MARCMsgID = msg.MsgID\r\nGROUP BY\r\n\tmsg.Alarm_Priority\r\nORDER BY \r\n\tCASE msg.Alarm_Priority\r\n\t\tWHEN 'Critical' THEN 1\r\n\t\tWHEN 'High' THEN 2\r\n\t\tWHEN 'Medium' THEN 3\r\n\t\tWHEN 'Low' THEN 4\r\n\t\tWHEN 'Very Low' THEN 5\r\n\tEND",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Alarms",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-purple",
+                "value": 500
+              },
+              {
+                "color": "light-red",
+                "value": 1000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 0
+      },
+      "id": 17,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n\tcount(*) as Count\nFROM\n  \tLogRhythm_Alarms.dbo.Alarm a with (NOLOCK)\n  \t  JOIN\n\t  LogRhythmEMDB.dbo.AlarmRule ar\n\t    ON a.AlarmRuleID = ar.AlarmRuleID\nWHERE\n  ar.AlarmType = 5\n    AND\n  $__timeFilter(DateInserted)",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              },
+              {
+                "color": "light-green",
+                "value": 20
+              },
+              {
+                "color": "light-red",
+                "value": 30
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Time to Triage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVG Time to Close"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVG Time to Investigate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Alarms Risk"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select b.Technician,b.[UnAssigned Alarms],b.[Opened Alarms],b.[Closed Alarms],b.Total,a.[Avg Time to Triage],a.[AVG Time to Close],a.[AVG Time to Investigate],a.[Avg Alarms Risk]\r\nfrom (select FullName as Technician,avg(DATEDIFF(minute,GeneratedOn,OpenedOn)) as 'Avg Time to Triage', avg(DATEDIFF(minute,GeneratedOn,ClosedOn)) as 'AVG Time to Close', avg(DATEDIFF(minute,GeneratedOn,InvestigatedOn)) as 'AVG Time to Investigate'\r\n,avg(m.Priority) as  'Avg Alarms Risk',count(*) as 'Total'\r\nfrom [LogRhythm_Alarms].[dbo].AlarmMetrics\r\njoin [LogRhythm_Alarms].[dbo].[Alarm] as a on a.AlarmID=AlarmMetrics.AlarmID\r\njoin LogRhythmEMDB.dbo.AlarmRule on a.AlarmRuleID=AlarmRule.AlarmRuleID\r\nleft join [LogRhythmEMDB].[dbo].[Person] as p on p.PersonID=LastPersonID\r\nleft join [LogRhythm_Alarms].[dbo].[AlarmToMARCMsg] as am on a.AlarmID=am.AlarmID\r\nleft join [LogRhythm_Events].[dbo].[Msg] as m on am.MARCMsgID=m.MsgID\r\nwhere  $__timeFilter(AlarmDate) and p.PersonID is not null\r\ngroup by FullName) as a\r\nfull outer join\r\n(select *,isnull(\"UnAssigned Alarms\",0)+isnull(\"Opened Alarms\",0)+isnull(\"Closed Alarms\",0) as \"Total\"\r\nfrom\r\n(\r\nselect FullName as Technician, (Convert(nvarchar, Case\r\nWhen AlarmStatus = 0 Then 'UnAssigned Alarms'\r\nWhen AlarmStatus = 1 Then 'Opened Alarms'\r\nWhen AlarmStatus = 2 Then 'Opened Alarms'\r\nWhen AlarmStatus = 3 Then 'Opened Alarms'\r\nWhen AlarmStatus = 4 Then 'Closed Alarms'\r\nWhen AlarmStatus = 5 Then 'Closed Alarms'\r\nWhen AlarmStatus = 6 Then 'Closed Alarms'\r\nWhen AlarmStatus = 7 Then 'Closed Alarms'\r\nWhen AlarmStatus = 8 Then 'Closed Alarms'\r\nWhen AlarmStatus = 9 Then 'Closed Alarms' End)) as AlarmStatus, count(AlarmStatus) as 'Total'\r\nfrom [LogRhythm_Alarms].[dbo].AlarmMetrics\r\njoin [LogRhythm_Alarms].[dbo].[Alarm] as a on a.AlarmID=AlarmMetrics.AlarmID\r\njoin LogRhythmEMDB.dbo.AlarmRule on a.AlarmRuleID=AlarmRule.AlarmRuleID\r\nleft join [LogRhythmEMDB].[dbo].[Person] on Person.PersonID=LastPersonID\r\nleft join [LogRhythm_Alarms].[dbo].[AlarmToMARCMsg] as am on a.AlarmID=am.AlarmID\r\nleft join [LogRhythm_Events].[dbo].[Msg] as m on am.MARCMsgID=m.MsgID\r\nwhere  $__timeFilter(AlarmDate)\r\ngroup by FullName,AlarmStatus\r\n) d\r\npivot\r\n(\r\nsum(Total)\r\nfor AlarmStatus in (\"UnAssigned Alarms\",\"Opened Alarms\",\"Closed Alarms\")\r\n) piv) as b on a.Technician=b.Technician\r\norder by a.Technician\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms By Analyst",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              },
+              {
+                "color": "#EF843C",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTD"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTR"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "custom.width",
+                "value": 111
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTQ"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "custom.width",
+                "value": 128
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTI"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTM"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg TTV"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Incident"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mitigated"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resolved"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Cases"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select a.*,b.[Avg Time to Detect] as 'avg TTD',b.[Avg Time to Respond] as 'avg TTR',b.[Avg Time to Qualify] as 'avg TTQ',b.[Avg Time to Investigate] as 'avg TTI',b.[Avg Time to Mitigate] as 'avg TTM',b.[Avg Time to Recover] as 'avg TTV' from\r\n(select *, (isnull(Created,0)+isnull(Completed,0)+isnull(Incident,0)+isnull(Mitigated,0)+isnull(Resolved,0)) as 'Total Cases' from\r\n(\r\nSELECT p.FullName as \"Case Owner\",count(c.Name) as CaseCount,\r\n(Convert(nvarchar, Case\r\nWhen CaseStatusID = 1 Then 'Created'\r\nWhen CaseStatusID = 2 Then 'Completed'\r\nWhen CaseStatusID = 3 Then 'Incident'\r\nWhen CaseStatusID = 4 Then 'Mitigated'\r\nWhen CaseStatusID = 5 Then 'Resolved' End)) as CaseStatusID\r\n  FROM [LogRhythm_CMDB].[dbo].[Case] as c\r\n  left join [LogRhythmEMDB].[dbo].[Person] as p on p.PersonID=c.PersonID\r\n  where  DateCreated between getdate()-30 and getdate() and p.PersonID is not null\r\ngroup by p.FullName,CaseStatusID\r\n) d\r\npivot\r\n(\r\nsum(CaseCount)\r\nfor CaseStatusID in (Created,Completed,Incident,Mitigated,Resolved)\r\n) piv) as a\r\nfull outer join\r\n(select p.FullName, avg(DATEDIFF(minute,DateEarliestEvidence,DateCreated)) as 'Avg Time to Detect',\r\navg(DATEDIFF(minute,DateCreated,DateMitigated)) as 'Avg Time to Respond',\r\navg(DATEDIFF(minute,DateEarliestEvidence,DateCreated)) as 'Avg Time to Qualify',\r\navg(DATEDIFF(minute,DateCreated,DateClosed)) as 'Avg Time to Investigate',\r\navg(DATEDIFF(minute,DateIncident,DateMitigated)) as 'Avg Time to Mitigate',\r\navg(DATEDIFF(minute,DateMitigated,DateResolved)) as 'Avg Time to Recover'\r\nFROM [LogRhythm_CMDB].[dbo].[Case] as c\r\nleft join [LogRhythmEMDB].[dbo].[Person] as p on p.PersonID=c.PersonID\r\nwhere  DateCreated between getdate()-30 and getdate() and p.PersonID is not null\r\ngroup by FullName) as b on a.[Case Owner]=b.FullName",
+          "refId": "A"
+        }
+      ],
+      "title": "Cases by Analyst",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "New"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "FullName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 196
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Opened"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select *\r\nfrom\r\n(\r\nselect FullName,(Convert(nvarchar, Case \r\nWhen AlarmStatus = 0 Then 'New' \r\nWhen AlarmStatus = 1 Then 'Opened'\r\nWhen AlarmStatus = 2 Then 'Opened'\r\nWhen AlarmStatus = 3 Then 'Opened'\r\nWhen AlarmStatus = 4 Then 'Closed' \r\nWhen AlarmStatus = 5 Then 'Closed' \r\nWhen AlarmStatus = 6 Then 'Closed' \r\nWhen AlarmStatus = 7 Then 'Closed' \r\nWhen AlarmStatus = 8 Then 'Closed' \r\nWhen AlarmStatus = 9 Then 'Closed' End)) as AlarmStatus \r\n, count(AlarmStatus) as 'Total'\r\nfrom [LogRhythm_Alarms].[dbo].AlarmMetrics \r\njoin [LogRhythm_Alarms].[dbo].[Alarm] on Alarm.AlarmID=AlarmMetrics.AlarmID \r\njoin LogRhythmEMDB.dbo.AlarmRule on Alarm.AlarmRuleID=AlarmRule.AlarmRuleID\r\nleft join [LogRhythmEMDB].[dbo].[Person] on Person.PersonID=LastPersonID\r\nwhere  $__timeFilter(AlarmDate)\r\ngroup by FullName,AlarmStatus\r\n) d\r\npivot\r\n(\r\nsum(Total)\r\nfor AlarmStatus in (New,Opened,Closed)\r\n) piv",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms By Analyst",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(189, 38, 38)"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select datename(dw,AlarmDate) as Day,AlarmDate, (ISNULL(New,0)+ISNULL(OpenAlarm,0)+ISNULL(Working,0)+ISNULL(Escalated,0)+ISNULL(AutoClosed,0)+ISNULL(FalsePositive,0)+ISNULL(Resolved,0)+ISNULL(UnResolved,0)+ISNULL(Reported,0)+ISNULL(Monitor,0)) as Total,\r\n(ISNULL(AutoClosed,0)+ISNULL(FalsePositive,0)+ISNULL(Resolved,0)+ISNULL(UnResolved,0)+ISNULL(Reported,0)+ISNULL(Monitor,0)) as Closed\r\nfrom\r\n(\r\nselect CONVERT(date, AlarmDate) as AlarmDate,count(AlarmName.Name) as AlarmCount,\r\n(Convert(nvarchar, Case\r\nWhen AlarmStatus = 0 Then 'New'\r\nWhen AlarmStatus = 1 Then 'OpenAlarm'\r\nWhen AlarmStatus = 2 Then 'Working'\r\nWhen AlarmStatus = 3 Then 'Escalated'\r\nWhen AlarmStatus = 4 Then 'AutoClosed'\r\nWhen AlarmStatus = 5 Then 'FalsePositive'\r\nWhen AlarmStatus = 6 Then 'Resolved'\r\nWhen AlarmStatus = 7 Then 'UnResolved'\r\nWhen AlarmStatus = 8 Then 'Reported'\r\nWhen AlarmStatus = 9 Then 'Monitor' End)) as AlarmStatus\r\nfrom [LogRhythm_Alarms].[dbo].[Alarm] as Alarm join LogRhythmEMDB.dbo.AlarmRule as AlarmName on Alarm.AlarmRuleID=AlarmName.AlarmRuleID\r\nwhere\r\nAlarm.AlarmDate BETWEEN getdate()-6 AND getdate()\r\ngroup by AlarmDate,AlarmStatus\r\n) d\r\npivot\r\n(\r\nsum(AlarmCount)\r\nfor AlarmStatus in (New,OpenAlarm,Working,Escalated,AutoClosed,FalsePositive,Resolved,UnResolved,Reported,Monitor)\r\n) piv\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Weekly Alarms Status",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(105, 191, 186)"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 383
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "New"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 81
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Open"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Working"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 79
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Escalated"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Auto Closed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 102
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "False Positive"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 105
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resolved"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 102
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "UnResolved"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 84
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reported"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Monitor"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 20,
+        "x": 3,
+        "y": 45
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select Name, (ISNULL(New,0)+ISNULL(OpenAlarm,0)+ISNULL(Working,0)+ISNULL(Escalated,0)+ISNULL(AutoClosed,0)+ISNULL(FalsePositive,0)+ISNULL(Resolved,0)+ISNULL(UnResolved,0)+ISNULL(Reported,0)+ISNULL(Monitor,0)) as Total,\r\nISNULL(New,0) as New,\r\nISNULL(OpenAlarm,0) as 'Open',\r\nISNULL(Working,0) as Working,\r\nISNULL(Escalated,0) as Escalated,\r\nISNULL(AutoClosed, 0 )as 'Auto Closed',\r\nISNULL(FalsePositive,0) as 'False Positive',\r\nISNULL(Resolved,0) as Resolved,\r\nISNULL(UnResolved,0) as UnResolved,\r\nISNULL(Reported,0) as Reported,\r\nISNULL(Monitor,0) as Monitor\r\nfrom\r\n(\r\nselect AlarmName.Name,count(AlarmName.Name) as AlarmCount,\r\n(Convert(nvarchar, Case\r\nWhen AlarmStatus = 0 Then 'New' \r\nWhen AlarmStatus = 1 Then 'OpenAlarm'\r\nWhen AlarmStatus = 2 Then 'Working'\r\nWhen AlarmStatus = 3 Then 'Escalated'\r\nWhen AlarmStatus = 4 Then 'AutoClosed' \r\nWhen AlarmStatus = 5 Then 'FalsePositive' \r\nWhen AlarmStatus = 6 Then 'Resolved' \r\nWhen AlarmStatus = 7 Then 'UnResolved' \r\nWhen AlarmStatus = 8 Then 'Reported' \r\nWhen AlarmStatus = 9 Then 'Monitor' End)) as AlarmStatus\r\nfrom [LogRhythm_Alarms].[dbo].[Alarm] as Alarm join LogRhythmEMDB.dbo.AlarmRule as AlarmName on Alarm.AlarmRuleID=AlarmName.AlarmRuleID\r\nwhere\r\n $__timeFilter(Alarm.AlarmDate)\r\ngroup by AlarmName.Name,AlarmStatus\r\n) d\r\npivot\r\n(\r\nmax(AlarmCount)\r\nfor AlarmStatus in (New,OpenAlarm,Working,Escalated,AutoClosed,FalsePositive,Resolved,UnResolved,Reported,Monitor)\r\n) piv\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarms by status",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(105, 145, 191)"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AlarmID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 261
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 23,
+        "x": 0,
+        "y": 63
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "format": "table",
+          "rawSql": "select [LogRhythm_Alarms].[dbo].AlarmMetrics.AlarmID,Name,\r\nCoalesce( Convert(varchar(5),abs(DateDiff(day, (cast(OpenedOn as datetime)-cast(GeneratedOn as datetime)),'1900-01-01')))  + ':'\r\n + Convert(varchar(10),(cast(OpenedOn as datetime)-cast(GeneratedOn as datetime)), 108),'00:00:00:00') as 'Response Time',\r\n Coalesce( Convert(varchar(5),abs(DateDiff(day, (cast(ClosedOn as datetime)-cast(GeneratedOn as datetime)),'1900-01-01')))  + ':'\r\n + Convert(varchar(10),(cast(ClosedOn as datetime)-cast(GeneratedOn as datetime)), 108),'00:00:00:00') as 'Resolution Time',\r\nGeneratedOn,OpenedOn,ClosedOn,\r\n(Convert(nvarchar, Case When AlarmStatus = 4 Then 'AutoClosed' When AlarmStatus = 8 Then 'Reported' When AlarmStatus = 6 Then 'Resolved' When AlarmStatus = 5 Then 'FalsePositive' When AlarmStatus = 0 Then 'New' When AlarmStatus = 1 Then 'OpenAlarm' when AlarmStatus = 9 Then 'Monitor' End)) as AlarmStatus,FullName\r\nfrom [LogRhythm_Alarms].[dbo].AlarmMetrics\r\njoin [LogRhythm_Alarms].[dbo].[Alarm] on Alarm.AlarmID=AlarmMetrics.AlarmID \r\njoin LogRhythmEMDB.dbo.AlarmRule on Alarm.AlarmRuleID=AlarmRule.AlarmRuleID\r\nleft join [LogRhythmEMDB].[dbo].[Person] on Person.PersonID=LastPersonID\r\nwhere  $__timeFilter(AlarmDate)\r\norder by [LogRhythm_Alarms].[dbo].AlarmMetrics.AlarmID desc\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Alarm SLA",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2025: Custom Report by Customer 1",
+  "uid": "ZMPJ4_TVz",
+  "version": 19,
+  "weekStart": ""
+}

@@ -1,0 +1,739 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 0
+      },
+      "id": 60,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH EntityMPS AS (\r\n    SELECT \r\n        h.EntityID,\r\n        ROUND(MAX(CAST(s.CountLogs AS FLOAT) / 60), 2) AS Max_MPS,\r\n        ROUND(AVG(CAST(s.CountLogs AS FLOAT) / 60), 2) AS Avg_MPS\r\n    FROM [LogRhythmEMDB].[dbo].MsgSource ms\r\n    INNER JOIN [LogRhythmEMDB].[dbo].Host h ON ms.HostID = h.HostID\r\n    INNER JOIN [LogRhythmEMDB].[dbo].MsgSourceMaxLogDate mld ON ms.MsgSourceID = mld.MsgSourceID\r\n    INNER JOIN [LogRhythm_LogMart].[dbo].[StatsMsgSourceCountsMinute] s ON ms.MsgSourceID = s.MsgSourceID\r\n    WHERE ms.MsgSourceID > 0 AND ms.RecordStatus = 1\r\n    GROUP BY h.EntityID\r\n),\r\nLogSourceCounts AS (\r\n    SELECT \r\n        h.EntityID,\r\n        COUNT(ms.MsgSourceID) AS LogSourceCount\r\n    FROM [LogRhythmEMDB].[dbo].MsgSource ms\r\n    INNER JOIN [LogRhythmEMDB].[dbo].Host h ON ms.HostID = h.HostID\r\n    WHERE ms.MsgSourceID > 0 AND ms.RecordStatus = 1\r\n    GROUP BY h.EntityID\r\n)\r\nSELECT \r\n    e.FullName AS 'Entity',\r\n    em.Max_MPS,\r\n    em.Avg_MPS,\r\n    lsc.LogSourceCount AS 'Total LogSource'\r\nFROM EntityMPS em\r\nINNER JOIN [LogRhythmEMDB].[dbo].[Entity] e ON e.EntityID = em.EntityID\r\nINNER JOIN LogSourceCounts lsc ON lsc.EntityID = em.EntityID\r\nORDER BY e.FullName;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "MPS Per Entity",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 11,
+        "y": 0
+      },
+      "id": 53,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": true,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH EntityMPS AS (\r\n    SELECT \r\n        h.EntityID,\r\n        ROUND(MAX(CAST(s.CountLogs AS FLOAT) / 60), 2) AS Max_MPS,\r\n        ROUND(AVG(CAST(s.CountLogs AS FLOAT) / 60), 2) AS Avg_MPS\r\n    FROM [LogRhythmEMDB].[dbo].MsgSource ms\r\n    INNER JOIN [LogRhythmEMDB].[dbo].Host h ON ms.HostID = h.HostID\r\n    INNER JOIN [LogRhythmEMDB].[dbo].MsgSourceMaxLogDate mld ON ms.MsgSourceID = mld.MsgSourceID\r\n    INNER JOIN [LogRhythm_LogMart].[dbo].[StatsMsgSourceCountsMinute] s ON ms.MsgSourceID = s.MsgSourceID\r\n    WHERE ms.MsgSourceID > 0 AND ms.RecordStatus = 1\r\n    GROUP BY h.EntityID\r\n),\r\nLogSourceCounts AS (\r\n    SELECT \r\n        h.EntityID,\r\n        COUNT(ms.MsgSourceID) AS LogSourceCount\r\n    FROM [LogRhythmEMDB].[dbo].MsgSource ms\r\n    INNER JOIN [LogRhythmEMDB].[dbo].Host h ON ms.HostID = h.HostID\r\n    WHERE ms.MsgSourceID > 0 AND ms.RecordStatus = 1\r\n    GROUP BY h.EntityID\r\n)\r\nSELECT \r\n    e.FullName AS 'Entity',\r\n    em.Max_MPS,\r\n    em.Avg_MPS,\r\n    lsc.LogSourceCount AS 'Total LogSource'\r\nFROM EntityMPS em\r\nINNER JOIN [LogRhythmEMDB].[dbo].[Entity] e ON e.EntityID = em.EntityID\r\nINNER JOIN LogSourceCounts lsc ON lsc.EntityID = em.EntityID\r\nORDER BY e.FullName;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "MPE Per Entity",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 0,
+        "y": 9
+      },
+      "id": 62,
+      "options": {
+        "displayLabels": [
+          "percent",
+          "value"
+        ],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT b.FullName as 'Entity',count(a.CaseID) as 'Count'\r\n  FROM [LogRhythm_CMDB].[dbo].[Case] as a\r\n  join [LogRhythmEMDB].[dbo].[Entity] as b on a.EntityID=b.EntityID\r\n  group by b.FullName\r\n  order by b.FullName\r\n ",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Cases Per Entity",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "iMETA - LAB"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 13,
+        "x": 11,
+        "y": 9
+      },
+      "id": 64,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "dataset": "LogRhythm_Alarms",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    Entity.Name AS 'Entity',\r\n    COUNT(AlarmName.Name) AS Total_Alarms\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[Alarm] AS Alarm\r\nJOIN \r\n    LogRhythmEMDB.dbo.AlarmRule AS AlarmName ON Alarm.AlarmRuleID = AlarmName.AlarmRuleID\r\nJOIN \r\n    LogRhythmEMDB.dbo.Entity AS Entity ON Entity.EntityID = Alarm.EntityID\r\nWHERE \r\n    $__timeFilter(Alarm.DateInserted)\r\n    AND AlarmName.[AlarmRuleGroup] != 'LogRhythm Diagnostics' -- Exclusion des alarmes diagnostics\r\nGROUP BY \r\n    Entity.Name\r\nORDER BY \r\n    Total_Alarms DESC;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Alarms Per Entity",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              },
+              {
+                "color": "#EAB839",
+                "value": 100
+              },
+              {
+                "color": "#EF843C",
+                "value": 200
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTD"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTTR"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 11,
+        "x": 0,
+        "y": 20
+      },
+      "id": 63,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": [
+            "avgTTD",
+            "avgTTR"
+          ],
+          "reducer": [
+            "mean"
+          ],
+          "show": true
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\nb.FullName,\r\nAVG(DATEDIFF(MINUTE, a.[DateEarliestEvidence], a.[DateCreated])) AS avgTTD,\r\nAVG(DATEDIFF(MINUTE, a.[DateCreated], a.[DateClosed])) AS avgTTR,\r\nCOUNT(*) AS CaseCount \r\nFROM \r\nLogRhythm_CMDB.dbo.[Case] as a\r\njoin [LogRhythmEMDB].[dbo].[Entity] as b on a.EntityID = b.EntityID\r\nGROUP BY\r\nb.FullName",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "KPIs per Entity (Cases)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 13,
+        "x": 11,
+        "y": 20
+      },
+      "id": 65,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "FullName",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\nentity.FullName,\r\n   avg(DATEDIFF(MINUTE, alarm_table.DateInserted, a.DateInserted)) AS 'Time to Detect',\r\n   avg(DATEDIFF(MINUTE, a.DateInserted, b.DateInserted)) AS 'Time to Acknowledge',\r\n   avg(DATEDIFF(MINUTE, b.DateInserted, c.DateInserted)) AS 'Time to Qualify',\r\n   avg(DATEDIFF(MINUTE, c.DateInserted, d.DateInserted)) AS 'Time to Report',\r\n   avg(DATEDIFF(MINUTE, c.DateInserted, e.DateInserted)) AS 'Time to Resolve'\r\nFROM [LogRhythm_Alarms].[dbo].[AlarmHistory] a\r\nJOIN [LogRhythm_Alarms].[dbo].[Alarm] alarm_table\r\n   ON a.AlarmID = alarm_table.AlarmID\r\njoin [LogRhythmEMDB].[dbo].[Entity] as entity on alarm_table.EntityID=entity.EntityID\r\nLEFT JOIN [LogRhythm_Alarms].[dbo].[AlarmHistory] b\r\n   ON a.AlarmID = b.AlarmID\r\n   AND b.Comments = 'Changed status to: Open: Working'\r\nLEFT JOIN [LogRhythm_Alarms].[dbo].[AlarmHistory] c\r\n   ON a.AlarmID = c.AlarmID\r\n   AND (c.Comments = 'Changed status to: Closed: False Alarm' OR c.Comments = 'Changed status to: Open: Escalated')\r\nLEFT JOIN [LogRhythm_Alarms].[dbo].[AlarmHistory] d\r\n   ON a.AlarmID = d.AlarmID\r\n   AND d.Comments = 'Changed status to: Closed: Reported'\r\nLEFT JOIN [LogRhythm_Alarms].[dbo].[AlarmHistory] e\r\n   ON a.AlarmID = e.AlarmID\r\n   AND e.Comments = 'Changed status to: Closed: Resolved'\r\nWHERE a.Comments = 'Changed status to: Open'\r\ngroup by entity.FullName",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "KPIs per Entity (Alarms)",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "barchart"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "2025: MSSP Entity Based Reporting 2",
+  "uid": "degqc6xr6ob28d",
+  "version": 5,
+  "weekStart": ""
+}

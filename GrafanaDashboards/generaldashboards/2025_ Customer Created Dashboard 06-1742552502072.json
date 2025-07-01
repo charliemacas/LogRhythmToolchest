@@ -1,0 +1,882 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TELEGRAF",
+      "label": "telegraf",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_TELEGRAF}"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<a>\n  <div style=\"display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; cursor: pointer; background-color: #f0f0f0; background-image: url('background-image-url.jpg'); background-size: cover; background-position: center;\">\n    <img src=\"https://www.cdg.ma/themes/cdg/asset/img/logo_hp.png\" style=\"max-width: 80%; max-height: 80%; display: block; margin: auto;\">\n  </div>\n</a>\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.4.13",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#000000",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Filiale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total_Alarms"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total des alarmes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 0,
+        "y": 3
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "dataset": "LogRhythm_Alarms",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    Entity.Name AS 'Entity',\r\n    COUNT(AlarmName.Name) AS Total_Alarms\r\nFROM \r\n    [LogRhythm_Alarms].[dbo].[Alarm] AS Alarm\r\nJOIN \r\n    LogRhythmEMDB.dbo.AlarmRule AS AlarmName ON Alarm.AlarmRuleID = AlarmName.AlarmRuleID\r\nJOIN \r\n    LogRhythmEMDB.dbo.Entity AS Entity ON Entity.EntityID = Alarm.EntityID\r\nWHERE \r\n    $__timeFilter(Alarm.DateInserted)\r\n    AND AlarmName.[AlarmRuleGroup] != 'LogRhythm Diagnostics' -- Exclusion des alarmes diagnostics\r\nGROUP BY \r\n    Entity.Name\r\nORDER BY \r\n    Total_Alarms DESC;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entity_Name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Filiale"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#000000",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total_Cases"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Total des Cases"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total_Priority_3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Alertes cybersécurité avérées"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total_Priority_2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Incidents cybersécurité"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg_TTD"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "MTTD"
+              },
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "dark-green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 20
+                    },
+                    {
+                      "color": "dark-orange",
+                      "value": 40
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 60
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg_TTR"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "MTTR"
+              },
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "dark-green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 60
+                    },
+                    {
+                      "color": "dark-orange",
+                      "value": 90
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 120
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 5,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "dataset": "LogRhythm_Alarms",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n    e.Name AS Entity_Name,                                   -- Nom de l'entité\r\n    COUNT(c.CaseNumber) AS Total_Cases,                     -- Nombre total de cases par entité\r\n    COUNT(CASE WHEN c.Priority = 3 THEN 1 END) AS Total_Priority_3, -- Nombre de cases avec priorité 3\r\n    COUNT(CASE WHEN c.Priority = 2 THEN 1 END) AS Total_Priority_2, -- Nombre de cases avec priorité 2\r\n    ISNULL(AVG(DATEDIFF(MINUTE, c.DateEarliestEvidence, c.DateCreated)), 0) AS Avg_TTD, -- Temps moyen avant détection\r\n    ISNULL(AVG(DATEDIFF(MINUTE, c.DateCreated, c.DateClosed)), 0) AS Avg_TTR -- Temps moyen avant clôture\r\nFROM \r\n    LogRhythm_CMDB.dbo.[Case] AS c WITH (NOLOCK)\r\nLEFT JOIN \r\n    LogRhythmEMDB.dbo.[Entity] AS e ON c.EntityID = e.EntityID -- Joindre la table Entity pour obtenir le nom de l'entité\r\nWHERE  \r\n    $__timeFilter(c.[DateCreated])                            -- Filtre temporel pour les incidents créés dans une certaine période\r\nGROUP BY \r\n    e.Name                                                   -- Groupement par nom de l'entité\r\nORDER BY \r\n    Total_Cases DESC;                                        -- Tri par nombre total de cases en décroissant\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#240f05",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 0,
+        "y": 12
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "dataset": "LogRhythm_Alarms",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    e.Name AS Entity,                                             -- Nom de l'entité\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-WAN' THEN 1 ELSE 0 END) AS [Vecteur-WAN],  -- Compte pour Vecteur-WAN\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-Mail' THEN 1 ELSE 0 END) AS [Vecteur-Mail], -- Compte pour Vecteur-Mail\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-Navigation' THEN 1 ELSE 0 END) AS [Vecteur-Navigation], -- Compte pour Vecteur-Navigation\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-LAN' THEN 1 ELSE 0 END) AS [Vecteur-LAN], -- Compte pour Vecteur-LAN\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-Local' THEN 1 ELSE 0 END) AS [Vecteur-Local], -- Compte pour Vecteur-Local\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-VPN' THEN 1 ELSE 0 END) AS [Vecteur-VPN],  -- Compte pour Vecteur-VPN\r\n    SUM(CASE WHEN t.Tag = 'Vecteur-USB' THEN 1 ELSE 0 END) AS [Vecteur-USB]  -- Compte pour Vecteur-USB\r\n    \r\nFROM \r\n    [LogRhythm_CMDB].[dbo].[CaseToTag] AS ct\r\nJOIN  \r\n    [LogRhythm_CMDB].[dbo].[Tag] AS t ON ct.TagID = t.TagID        -- Association entre tags et cases\r\nJOIN \r\n    [LogRhythm_CMDB].[dbo].[Case] AS c ON c.CaseID = ct.CaseID     -- Association entre cases et leurs tags\r\nLEFT JOIN \r\n    [LogRhythmEMDB].[dbo].[Entity] AS e ON c.EntityID = e.EntityID -- Association des entités\r\nWHERE \r\n    $__timeFilter(c.[DateCreated])                                -- Filtrage temporel\r\n    AND t.Tag LIKE 'Vecteur-%'                                    -- Filtrer uniquement les tags qui commencent par \"Vecteur-\"\r\nGROUP BY \r\n    e.Name                                                       -- Groupement par entité\r\nORDER BY \r\n    e.Name;                                                      -- Tri par nom de l'entité\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Vecteurs d'attaque par Filiale",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 12
+      },
+      "id": 9,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n  Tag, \r\n  COUNT(ct.CaseID) AS Count \r\nFROM \r\n  [LogRhythm_CMDB].[dbo].[CaseToTag] AS ct\r\nJOIN  \r\n  [LogRhythm_CMDB].[dbo].[Tag] AS t ON ct.TagID = t.TagID\r\nJOIN \r\n  [LogRhythm_CMDB].[dbo].[Case] AS c ON c.CaseID = ct.CaseID\r\nWHERE \r\n  $__timeFilter(c.[DateCreated])\r\n  AND t.Tag LIKE 'vecteur%'   -- Filtrer uniquement les tags qui commencent par \"vecteur\"\r\nGROUP BY \r\n  Tag;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Vecteurs d'attaque",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Count",
+                  "Direction-Inbound"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 20
+      },
+      "id": 8,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n  Tag, \r\n  COUNT(ct.CaseID) AS Count \r\nFROM \r\n  [LogRhythm_CMDB].[dbo].[CaseToTag] AS ct\r\nJOIN  \r\n  [LogRhythm_CMDB].[dbo].[Tag] AS t ON ct.TagID = t.TagID\r\nJOIN \r\n  [LogRhythm_CMDB].[dbo].[Case] AS c ON c.CaseID = ct.CaseID\r\nWHERE \r\n  $__timeFilter(c.[DateCreated])\r\n  AND t.Tag LIKE 'Direction%'   -- Filtrer uniquement les tags qui commencent par \"vecteur\"\r\nGROUP BY \r\n  Tag;\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Direction d'attaque",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#052c2c",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 20
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "dataset": "LogRhythm_Alarms",
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n    e.Name AS Entity,                                             -- Nom de l'entité\r\n    SUM(CASE WHEN t.Tag = 'Direction-Inbound' THEN 1 ELSE 0 END) AS [Direction-Inbound],  -- Compte pour VDirection-Inbound\r\n    SUM(CASE WHEN t.Tag = 'Direction-Outbound' THEN 1 ELSE 0 END) AS [Direction-Outbound], -- Compte pour Direction-Outbound\r\n    SUM(CASE WHEN t.Tag = 'Direction-Internal' THEN 1 ELSE 0 END) AS [Direction-Internal]   -- Compte pour Direction-Internal\r\n    \r\nFROM \r\n    [LogRhythm_CMDB].[dbo].[CaseToTag] AS ct\r\nJOIN  \r\n    [LogRhythm_CMDB].[dbo].[Tag] AS t ON ct.TagID = t.TagID        -- Association entre tags et cases\r\nJOIN \r\n    [LogRhythm_CMDB].[dbo].[Case] AS c ON c.CaseID = ct.CaseID     -- Association entre cases et leurs tags\r\nLEFT JOIN \r\n    [LogRhythmEMDB].[dbo].[Entity] AS e ON c.EntityID = e.EntityID -- Association des entités\r\nWHERE \r\n    $__timeFilter(c.[DateCreated])                                -- Filtrage temporel\r\n    AND t.Tag LIKE 'Direction-%'                                    -- Filtrer uniquement les tags qui commencent par \"Vecteur-\"\r\nGROUP BY \r\n    e.Name                                                       -- Groupement par entité\r\nORDER BY \r\n    e.Name;                                                      -- Tri par nom de l'entité\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Direction d'attaque par Filiale",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2025: Customer Created Dashboard 06",
+  "uid": "b503c967-e492-4ffe-b11d-35ed0999f88c",
+  "version": 2,
+  "weekStart": ""
+}

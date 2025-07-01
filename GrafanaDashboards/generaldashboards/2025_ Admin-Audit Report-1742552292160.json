@@ -1,0 +1,835 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_MICROSOFT_SQL SERVER-1",
+      "label": "Microsoft SQL Server-1",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    },
+    {
+      "name": "DS_MICROSOFT_SQL SERVER",
+      "label": "Microsoft SQL Server",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.13"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT        dbo.WebTask.DateCreated, dbo.Person.FullName AS [Analyst Name], dbo.WebTask.TaskName, dbo.WebTask.LongResults, dbo.WebTask.ShortResults, dbo.WebTask.NumResults\r\nFROM            dbo.WebSearch INNER JOIN\r\n                         dbo.WebTask ON dbo.WebSearch.WebSearchID = dbo.WebTask.WebSearchId INNER JOIN\r\n                         dbo.WebTaskToUser ON dbo.WebTask.TaskID = dbo.WebTaskToUser.WebTaskId INNER JOIN\r\n                         dbo.Person ON dbo.WebTaskToUser.UserId = dbo.Person.PersonID\r\nWHERE        (dbo.WebTask.LongResults NOT LIKE 'Alarm Drill%') AND dbo.WebTask.ShortResults LIKE '%Failed%' AND $__timeFilter(dbo.WebTask.DateCreated\r\n)\r\nORDER BY dbo.WebTask.DateCreated",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "FAILED Web Console Searches",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "FullName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 128
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MPERuleID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT        dbo.MPERule_SHADOW.DateUpdated, dbo.MPERule_SHADOW.TransType, dbo.MPERule_SHADOW.OriginalUser,\r\n                         dbo.MPERule_SHADOW.MPERuleID, dbo.MPERule.FullName, dbo.MPERule.ShortDesc\r\nFROM            dbo.MPERule_SHADOW INNER JOIN\r\n                         dbo.MPERule ON dbo.MPERule_SHADOW.MPERuleID = dbo.MPERule.MPERuleID\r\nWHERE $__timeFilter(dbo.MPERule_SHADOW.DateUpdated)\r\nORDER BY dbo.MPERule_SHADOW.DateUpdated",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "MPE Rules Changes",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT        TOP (100) PERCENT dbo.GlobalLogProcessingRule_SHADOW.DateUpdated, dbo.GlobalLogProcessingRule_SHADOW.TransType, dbo.GlobalLogProcessingRule_SHADOW.OriginalUser, dbo.GlobalLogProcessingRule.Name, \r\n                         dbo.GlobalLogProcessingRule.LongDesc\r\nFROM            dbo.GlobalLogProcessingRule_SHADOW INNER JOIN\r\n                         dbo.GlobalLogProcessingRule ON dbo.GlobalLogProcessingRule_SHADOW.GlobalLogProcessingRuleID = dbo.GlobalLogProcessingRule.GlobalLogProcessingRuleID\r\nWHERE        (dbo.GlobalLogProcessingRule_SHADOW.DateUpdated IS NOT NULL) AND $__timeFilter(dbo.GlobalLogProcessingRule_SHADOW.DateUpdated)\r\nORDER BY dbo.GlobalLogProcessingRule_SHADOW.DateUpdated",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "GLPR Rules Modified",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "Use [LogRhythmEMDB]\r\nSELECT dbo.MsgSourceType.FullName, Count(*) as LogSourcesCount, dbo.MsgSource_SHADOW.OriginalUser\r\nFrom dbo.MsgSource INNER JOIN dbo.MsgSourceType ON dbo.MsgSource.MsgSourceTypeID = dbo.MsgSourceType.MsgSourceTypeID INNER JOIN\r\ndbo.MsgSource_SHADOW ON dbo.MsgSource.MsgSourceID = dbo.MsgSource_Shadow.MsgSourceID\r\nWHERE $__timeFilter(dbo.MsgSource_Shadow.TransDate) AND\r\ndbo.MsgSource_Shadow.TransType='INSERT' AND dbo.MsgSourceType.FullName not like'%LogRhythm%'\r\nGROUP BY dbo.MsgSourceType.FullName, dbo.MsgSource_Shadow.OriginalUser",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Added Log-Sources",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 23
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "Use [LogRhythm_LogMart]\r\nSELECT TOP (100) PERCENT LogRhythmEMDB.dbo.MsgSource.Name as LogSource, LogRhythmEMDB.dbo.MsgSourceType.FullName as LogSourceType,\r\nSUM (dbo.StatsMsgSourceCounts.CountLogs -dbo.StatsMsgSourceCounts.CountIdentifiedLogs) as UnIdentified\r\nFROM dbo.StatsMsgSourceCounts INNER JOIN LogRhythmEMDB.dbo.MsgSource ON dbo.StatsMsgSourceCounts.MsgSourceID = \r\nLogRhythmEMDB.dbo.MsgSource.MsgSourceID INNER JOIN LogRhythmEMDB.dbo.MsgSourceType ON\r\nLogRhythmEMDB.dbo.MsgSource.MsgSourceTypeID = LogRhythmEMDB.dbo.MsgSourceType.ParentMsgSourceTypeID\r\nWHERE (dbo.StatsMsgSourceCounts.StatDate > GetDate()-1) AND\r\n(dbo.StatsMsgSourceCounts.CountLogs -dbo.StatsMsgSourceCounts.CountIdentifiedLogs > 0)\r\nGROUP BY LogRhythmEMDB.dbo.MsgSourceType.FullName,LogRhythmEMDB.dbo.MsgSource.Name\r\nOrder BY UnIdentified DESC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Un-Identified Log-Sources",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 23
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "Use [LogRhythm_LogMart]\r\nSELECT LogRhythmEMDB.dbo.MsgSourceType.FullName as LogSourceType,\r\nSUM (dbo.StatsMsgSourceCounts.CountLogs -dbo.StatsMsgSourceCounts.CountIdentifiedLogs) as UnIdentified\r\nFROM dbo.StatsMsgSourceCounts INNER JOIN LogRhythmEMDB.dbo.MsgSource ON dbo.StatsMsgSourceCounts.MsgSourceID = \r\nLogRhythmEMDB.dbo.MsgSource.MsgSourceID INNER JOIN LogRhythmEMDB.dbo.MsgSourceType ON\r\nLogRhythmEMDB.dbo.MsgSource.MsgSourceTypeID =LogRhythmEMDB.dbo.MsgSourceType.ParentMsgSourceTypeID\r\nWHERE (dbo.StatsMsgSourceCounts.StatDate > GetDate()-1) AND (dbo.StatsMsgSourceCounts.CountLogs -dbo.StatsMsgSourceCounts.CountIdentifiedLogs >0)\r\nGROUP BY LogRhythmEMDB.dbo.MsgSourceType.FullName\r\nOrder BY UnIdentified DESC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "UnIdentified Logs",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 23
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.13",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT DISTINCT SDES.login_name, SDES.host_name as LoginFrom\r\nFROM sys.dm_exec_sessions SDES\r\nWHERE (SDES.database_id =8 or SDES.database_id =9)  AND \r\n(SDES.login_name !='sa' AND SDES.login_name !='' AND SDES.login_name  NOT LIKE 'LogRhythm%')\r\nOrder BY login_name",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Console Logged in Users",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rule Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 446
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TransType"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 31
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_MICROSOFT_SQL SERVER-1}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT dbo.AIERuleToEngine_SHADOW.TransDate, dbo.AIERuleToEngine_SHADOW.TransType, dbo.AIERule.Name AS [Rule Name],\r\n dbo.AIERuleToEngine_SHADOW.OriginalUser,\r\n (SELECT case \r\n When dbo.AIERuleToEngine_SHADOW.Enabled is NULL THEN 'Not Yet Enabled'\r\n When dbo.AIERuleToEngine_SHADOW.Enabled = '0' THEN 'Enabled' end) as 'Rule Status'\r\nFROM   dbo.AIERuleToEngine_SHADOW INNER JOIN\r\n                         dbo.AIERule ON dbo.AIERuleToEngine_SHADOW.AIERuleID = dbo.AIERule.AIERuleID\r\nWHERE        (dbo.AIERuleToEngine_SHADOW.TransDate > GETDATE() - 10)\r\nORDER BY dbo.AIERuleToEngine_SHADOW.TransDate",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "AIE Rules Changed",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2025: Admin-Audit Report",
+  "uid": "b9be0279-405b-41f8-b8eb-1cc67781825c",
+  "version": 4,
+  "weekStart": ""
+}
