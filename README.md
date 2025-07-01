@@ -10,4 +10,4 @@ A collection of resources you can leverage to improve the functionality of a Log
 
  # How To Download Contents Directly Via Powershell
 
-Invoke-WebRequest -Uri "https://github.com/charliemacas/LogRhythmToolchest/archive/refs/heads/main.zip" -OutFile "LogRhythmToolchest.zip
+Invoke-WebRequest -Uri "https://github.com/charliemacas/LogRhythmToolchest/archive/refs/heads/main.zip" -OutFile "LogRhythmToolchest.zip"
