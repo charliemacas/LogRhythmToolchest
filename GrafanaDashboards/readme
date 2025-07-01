@@ -1,1 +1,3 @@
+# You can use Grafana to improve the overall reporting and alerting capability of your SIEM. 
 
+This involves adding SQL and ElasticSearch as data connectors, and then uploading these pre-built dashboards e.g. JSON files. 
