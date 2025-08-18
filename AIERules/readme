@@ -1,1 +1,3 @@
+A collection of pre-built AIE rules you can import directly into any LogRhythm 7 deployment, typically these will rely on Microsoft Event Logs, Microsoft Sysinternal Sysmon & Powershell logs.
 
+Please read the rule descriptions once imported for more detail. 
