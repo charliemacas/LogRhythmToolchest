@@ -1,5 +1,3 @@
-# Please checkout the following repository for a pre-built.exe tool that makes ingesting threat data signifcantly easier. Some screenshots included below. 
-
 Threat Intelligence Management Tool - https://github.com/m-jay21/Threat-Intelligence-Feed-Manager 
 
 <img width="1186" height="793" alt="image" src="https://github.com/user-attachments/assets/579a5f7c-d296-4a17-852e-de8d7358d1f5" />
