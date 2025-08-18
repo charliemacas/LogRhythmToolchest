@@ -5,3 +5,4 @@ The idea is that you have stopped the Mediator Service. Renamed the Spooling fol
 This creates a new folder so the Data Processor can focus on LIVE ingestion.
 The script can then be set up to drip feed the older logs into the Data Processor without overwhelming it.
 The script prompts the user for the required folders so it can be applied to many use-cases e.g. unprocessed logs, DXRP, EventSpool
+
