@@ -6,3 +6,6 @@ This creates a new folder so the Data Processor can focus on LIVE ingestion.
 The script can then be set up to drip feed the older logs into the Data Processor without overwhelming it.
 The script prompts the user for the required folders so it can be applied to many use-cases e.g. unprocessed logs, DXRP, EventSpool
 
+# Useful Commands
+
+Checkout the Word document within here it is full of useful commands for various scenarios in LogRhythm
