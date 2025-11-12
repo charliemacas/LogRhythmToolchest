@@ -1,5 +1,3 @@
-check_warm_capacity_v3.4.sh -- written by David O'Rourke LR Support 2025
-
 # Purpose:
 Produces a capacity and health report for Warm tier storage in a LogRhythm DX cluster. LogRhythm Users with a DX Cluster containing Warm Nodes can use the report to make better understand their warm retention capacity, and idenmtify whether their shard count could be affecting their indexing rate.
 
@@ -84,3 +82,5 @@ Estimated Max Safe Retention (disk-based): ~20 days
 Warm node capacity check complete.
 ────────────────────────────────────
 
+```
+check_warm_capacity_v3.4.sh -- written by David O'Rourke LR Support 2025
