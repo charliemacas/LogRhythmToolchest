@@ -42,6 +42,8 @@ Estimated Max Safe Retention: Number of days the warm nodes can safely retain in
 
 # Example Output
 
+```bash
+
 Warm nodes detected:
 lrs-dist-dx04
 ────────────────────────────────────
@@ -66,10 +68,10 @@ logs-2025-11-10   5.5gb
 logs-2025-11-11   5.8gb
 logs-2025-11-12   2.1gb
 ────────────────────────────────────
-✅ SAFE (Shard/Heap load under threshold)
-✅ DISK OK: Sufficient disk on warm nodes
+SAFE (Shard/Heap load under threshold)
+DISK OK: Sufficient disk on warm nodes
 ────────────────────────────────────
 Estimated Max Safe Retention (disk-based): ~20 days
-✅ Warm node capacity check complete.
+Warm node capacity check complete.
 ────────────────────────────────────
 
