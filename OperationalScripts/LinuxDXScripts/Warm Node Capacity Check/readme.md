@@ -1,4 +1,4 @@
-check_ultrawarm_capacity_v3.4.sh -- written by David O'Rourke LR Support 2025
+check_warm_capacity_v3.4.sh -- written by David O'Rourke LR Support 2025
 
 # Purpose:
 Produces a capacity and health report for Warm tier storage in a LogRhythm DX cluster. LogRhythm Users with a DX Cluster containing Warm Nodes can use the report to make better informed decisions on their warm retention capacity, and whether their shard count could be affecting their indexing rate.
@@ -20,11 +20,11 @@ sudo sh check_ultrawarm_capacity_v3.4.sh <retention_days>
 NOTE: retention_days is user inputted - try provide the current warm/ultra-warm TTL (which can be found in LogRhythm Confurugation Manager)
 
 # With detailed output for all warm indices
-sudo sh check_ultrawarm_capacity_v3.4.sh --details <retention_days>
+sudo sh check_warm_capacity_v3.4.sh --details <retention_days>
 
 examples:
-sudo sh check_ultrawarm_capacity_v3.4.sh 182
-sudo sh check_ultrawarm_capacity_v3.4.sh --details 182
+sudo sh check_warm_capacity_v3.4.sh 182
+sudo sh check_warm_capacity_v3.4.sh --details 182
 
 # Output
 
