@@ -1,9 +1,11 @@
 check_warm_capacity_v3.4.sh -- written by David O'Rourke LR Support 2025
 
 # Purpose:
-Produces a capacity and health report for Warm tier storage in a LogRhythm DX cluster. LogRhythm Users with a DX Cluster containing Warm Nodes can use the report to make better informed decisions on their warm retention capacity, and whether their shard count could be affecting their indexing rate.
+Produces a capacity and health report for Warm tier storage in a LogRhythm DX cluster. LogRhythm Users with a DX Cluster containing Warm Nodes can use the report to make better understand their warm retention capacity, and idenmtify whether their shard count could be affecting their indexing rate.
 
 The shard threshold formula used within the script is based off the Elasticsearch Shards Per Node threshold graph found in 7.22 LR Release in Grafana. To note, if the threshold is breached, indexing new data can be impaired.
+
+*** The report should only be used as supplmentary information for your deployment. If you are planning on making changes to the sizing of your deployment, you should work with your account team to understand the full implications of the proposed growth. Do not rely on the output of this report alone.
 
 # Requirements:
 LogRhythm DX Cluster with Warm Node(s) accessible from the host running the script
