@@ -10,22 +10,29 @@ LogRhythm DX Cluster with Warm Node(s) accessible from the host running the scri
 bc installed for floating-point calculations
 
 If not installed: 
+```bash
 sudo yum install -y bc
-
+```
 How to Run:
 
 # Basic usage with retention days
+
+```bash
 sudo sh check_ultrawarm_capacity_v3.4.sh <retention_days>
+```
 
 NOTE: retention_days is user inputted - try provide the current warm/ultra-warm TTL (which can be found in LogRhythm Confurugation Manager)
 
 # With detailed output for all warm indices
+```bash
 sudo sh check_warm_capacity_v3.4.sh --details <retention_days>
+```
 
 examples:
+```bash
 sudo sh check_warm_capacity_v3.4.sh 182
 sudo sh check_warm_capacity_v3.4.sh --details 182
-
+```
 # Output
 
 Warm nodes detected: Lists all warm nodes
