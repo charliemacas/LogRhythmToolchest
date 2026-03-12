@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<remv1:Remediation-Plugin
+    xmlns:remv1="RemediationVersion1.xsd"
+    Name="Webhook Suite - Send AIE Alarm As Webhook"
+    Guid="107ad660-4daa-4abe-9acf-6a2c3f768672"
+    Version="1"
+    IsLogRhythmPlugin="false">
+
+  <!-- ===================================================== -->
+  <!-- Generic Webhook (Full Alarm JSON for SOAR platforms)  -->
+  <!-- ===================================================== -->
+  <remv1:Action Name="Send Alarm to Generic Webhook (Full Alarm JSON)"
+                Command="pwsh">
+
+    <remv1:ConstantParameter Name="Script"
+                             Switch="-file GenericWebhook.ps1"
+                             Order="1"/>
+
+    <remv1:StringParameter Name="LogRhythm Alarm ID"
+                           Switch="-AlarmId "
+                           Order="2">
+      <remv1:DefaultInput>
+        <remv1:AlarmId/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:StringParameter Name="Webhook Endpoint URL"
+                           Switch="-WebhookUrl "
+                           Order="3"/>
+
+    <remv1:StringParameter Name="LogRhythm Platform Base URL"
+                           Switch="-LrBaseUrl "
+                           Order="4">
+      <remv1:DefaultInput>
+        <remv1:StaticInput Value="https://YOUR-LOGRHYTHM-HOST:8501"/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:EncryptedParameter>
+      <remv1:StringParameter Name="LogRhythm API Bearer Token"
+                             Switch="-BearerToken "
+                             Order="5"/>
+    </remv1:EncryptedParameter>
+
+  </remv1:Action>
+
+
+  <!-- ================================= -->
+  <!-- Slack Notification Webhook Action -->
+  <!-- ================================= -->
+  <remv1:Action Name="Send Alarm Notification to Slack"
+                Command="pwsh">
+
+    <remv1:ConstantParameter Name="Script"
+                             Switch="-file SlackWebhook.ps1"
+                             Order="1"/>
+
+    <remv1:StringParameter Name="LogRhythm Alarm ID"
+                           Switch="-AlarmId "
+                           Order="2">
+      <remv1:DefaultInput>
+        <remv1:AlarmId/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:StringParameter Name="Slack Incoming Webhook URL"
+                           Switch="-WebhookUrl "
+                           Order="3"/>
+
+    <remv1:StringParameter Name="LogRhythm Platform Base URL"
+                           Switch="-LrBaseUrl "
+                           Order="4">
+      <remv1:DefaultInput>
+        <remv1:StaticInput Value="https://YOUR-LOGRHYTHM-HOST:8501"/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:EncryptedParameter>
+      <remv1:StringParameter Name="LogRhythm API Bearer Token"
+                             Switch="-BearerToken "
+                             Order="5"/>
+    </remv1:EncryptedParameter>
+
+  </remv1:Action>
+
+
+  <!-- ===================================== -->
+  <!-- Microsoft Teams Notification Webhook  -->
+  <!-- ===================================== -->
+  <remv1:Action Name="Send Alarm Notification to Microsoft Teams"
+                Command="pwsh">
+
+    <remv1:ConstantParameter Name="Script"
+                             Switch="-file TeamsWebhook.ps1"
+                             Order="1"/>
+
+    <remv1:StringParameter Name="LogRhythm Alarm ID"
+                           Switch="-AlarmId "
+                           Order="2">
+      <remv1:DefaultInput>
+        <remv1:AlarmId/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:StringParameter Name="Microsoft Teams Webhook URL"
+                           Switch="-WebhookUrl "
+                           Order="3"/>
+
+    <remv1:StringParameter Name="LogRhythm Platform Base URL"
+                           Switch="-LrBaseUrl "
+                           Order="4">
+      <remv1:DefaultInput>
+        <remv1:StaticInput Value="https://YOUR-LOGRHYTHM-HOST:8501"/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:EncryptedParameter>
+      <remv1:StringParameter Name="LogRhythm API Bearer Token"
+                             Switch="-BearerToken "
+                             Order="5"/>
+    </remv1:EncryptedParameter>
+
+  </remv1:Action>
+
+
+  <!-- ===================================================== -->
+  <!-- Windmill SOAR Webhook (Full Alarm JSON + Auth Token)  -->
+  <!-- ===================================================== -->
+  <remv1:Action Name="Send Alarm to Windmill SOAR Webhook"
+                Command="pwsh">
+
+    <remv1:ConstantParameter Name="Script"
+                             Switch="-file WindmillWebhook.ps1"
+                             Order="1"/>
+
+    <remv1:StringParameter Name="LogRhythm Alarm ID"
+                           Switch="-AlarmId "
+                           Order="2">
+      <remv1:DefaultInput>
+        <remv1:AlarmId/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:StringParameter Name="Windmill Webhook Endpoint URL"
+                           Switch="-WebhookUrl "
+                           Order="3">
+      <remv1:DefaultInput>
+        <remv1:StaticInput Value="https://YOUR-WINDMILL-HOST/api/w/YOUR-WORKSPACE/jobs/run_wait_result/f/u/YOUR-USERNAME/logrhythm_aie_alarm_handler"/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:StringParameter Name="LogRhythm Platform Base URL"
+                           Switch="-LrBaseUrl "
+                           Order="4">
+      <remv1:DefaultInput>
+        <remv1:StaticInput Value="https://YOUR-LOGRHYTHM-HOST:8501"/>
+      </remv1:DefaultInput>
+    </remv1:StringParameter>
+
+    <remv1:EncryptedParameter>
+      <remv1:StringParameter Name="LogRhythm API Bearer Token"
+                             Switch="-BearerToken "
+                             Order="5"/>
+    </remv1:EncryptedParameter>
+
+    <remv1:EncryptedParameter>
+      <remv1:StringParameter Name="Windmill API Bearer Token"
+                             Switch="-WindmillBearerToken "
+                             Order="6"/>
+    </remv1:EncryptedParameter>
+
+  </remv1:Action>
+
+</remv1:Remediation-Plugin>
