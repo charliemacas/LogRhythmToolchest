@@ -2,7 +2,7 @@
 
 Built for pwsh, ensure you have installed Powershell 7. 
 
-- actions.xml defines the schema within the actions tab of AIE, and what switches are fed to the .ps1 files during the actually running of the script. 
+- actions.xml defines the schema within the actions tab of AIE, and what switches are fed to the .ps1 files during the actual run of the script. 
 - The individual PS1 files are each action, and they are fairly self explanatory, just slight variations on body, to accomadate sending to other platforms. The main highlight/action this page goes into is Windmill SOAR Automation engine, via Webhook Trigger. 
 - Feel free to adapt and repackage your own version in the LogRhythm console, or just download the LPI file in it's own folder within this repo.
 - You will need the below things to get the main Windmill SOAR Webhook working, free Windmill cloud instances are available or you can install locally. 
