@@ -1,6 +1,0 @@
-# One term per line, or original,replacement
-# Lines starting with # are ignored. Matching is case-insensitive.
-EXAMPLECORP,CUSTOMER
-fw01
-sql-prod-02,DB-SERVER
-Project Falcon,PROJECT-X
