@@ -1,0 +1,22 @@
+# Run output: contains real customer log data. Never commit.
+EchoCoverage_*/
+LabPoc_*/
+**/http/
+anonymisation-map.csv
+coverage-report.*
+drilldown-raw.json
+echo-unpack-response.json
+
+# Real log exports and generated LLX files
+*.llx
+!Examples/*.llx
+
+# Test certificates and local scratch
+*.pem
+*.key
+*.pfx
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+Thumbs.db
