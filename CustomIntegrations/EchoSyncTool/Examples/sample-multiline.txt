@@ -1,0 +1,8 @@
+2026-01-01 09:00:00,123 ERROR [app-worker-1] Unhandled exception processing order 1001
+java.lang.NullPointerException: customer was null
+    at com.example.orders.Processor.handle(Processor.java:42)
+    at com.example.orders.Worker.run(Worker.java:17)
+
+2026-01-01 09:00:02,456 WARN [app-worker-2] Retrying payment gateway call (attempt 2 of 3)
+
+2026-01-01 09:00:05,789 INFO [app-worker-2] Payment gateway call succeeded
