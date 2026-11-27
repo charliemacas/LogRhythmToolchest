@@ -219,7 +219,7 @@ param(
 
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
-$ScriptVersion = '1.0.0'
+$ScriptVersion = '1.0.1'
 $StageOrder = @('Rules', 'Alarms', 'Drilldown', 'Llx', 'Echo')
 
 # =====================================================================================
@@ -388,6 +388,12 @@ function Invoke-Api {
     if ($IsPS7 -and $h.ContainsKey('Content-Type')) { if (-not $ContentType) { $ContentType = $h['Content-Type'] }; $h.Remove('Content-Type') }
     $args2 = @{ Method = $Method; Uri = $Url; Headers = $h; UseBasicParsing = $true; TimeoutSec = $TimeoutSec }
     if ($null -ne $Body) { $args2.Body = $Body }
+    if ($Body -is [string]) {
+        # Send UTF-8 bytes ourselves: 5.1 encodes string bodies as ISO-8859-1, which mangles or drops
+        # characters such as the BOM/NBSP seen in real ePO logs (the server then resets the connection)
+        $args2.Body = $Utf8.GetBytes($Body)
+        if ($ContentType -and $ContentType -notmatch 'charset') { $ContentType += '; charset=utf-8' }
+    }
     if ($ContentType) { $args2.ContentType = $ContentType }
     if ($Session) { $args2.WebSession = $Session }
     if ($IsPS7) { $args2.SkipHttpErrorCheck = $true; if ($SkipCertificateCheck) { $args2.SkipCertificateCheck = $true } }
@@ -1432,6 +1438,9 @@ foreach ($rule in $todo) {
         if ($rule.Status -eq 'NoDrilldown') { continue }
 
         $logs = Read-Json $logsFile
+        # A one-log file is saved as a bare object; 5.1 under StrictMode has no .Count on it.
+        # (Not @(Read-Json ...): Read-Json returns with the comma operator, so @() would nest the array.)
+        if ($logs -isnot [array]) { $logs = @($logs) }
 
         # 4. LLX
         if (-not $rule.Done.Llx) {

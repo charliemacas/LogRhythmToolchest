@@ -32,7 +32,15 @@ function Test-Case([string]$Name, [scriptblock]$Body) {
 }
 function Assert($c, [string]$m) { if (-not $c) { throw $m } }
 function Get-Report($f) { $h = @{}; Import-Csv (Join-Path $f 'coverage-report.csv') | ForEach-Object { $h[$_.RuleID] = $_ }; $h }
-function Get-MockState { Invoke-RestMethod -Uri "$EchoBaseUrl/mock/state" -SkipCertificateCheck }
+function Get-MockState {
+    if ($PSVersionTable.PSVersion.Major -ge 7) { return Invoke-RestMethod -Uri "$EchoBaseUrl/mock/state" -SkipCertificateCheck }
+    # Windows PowerShell 5.1 has no -SkipCertificateCheck; the mock uses a throwaway self-signed certificate
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
+    $prev = [System.Net.ServicePointManager]::ServerCertificateValidationCallback
+    [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+    try { return Invoke-RestMethod -Uri "$EchoBaseUrl/mock/state" }
+    finally { [System.Net.ServicePointManager]::ServerCertificateValidationCallback = $prev }
+}
 
 $env:LR_API_TOKEN = 'testtoken'
 $cred = New-Object pscredential('admin', (ConvertTo-SecureString 'password' -AsPlainText -Force))

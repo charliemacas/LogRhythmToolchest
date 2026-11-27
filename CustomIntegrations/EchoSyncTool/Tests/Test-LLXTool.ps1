@@ -17,13 +17,18 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$ToolPath = (Join-Path (Split-Path -Parent $PSScriptRoot) 'LLX-Tool.ps1'),
+    [string]$ToolPath,   # default: ..\LLX-Tool.ps1 relative to this script
     [switch]$KeepFiles
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 
+# Resolved here, not in param(): $PSScriptRoot can be empty in param defaults on Windows PowerShell 5.1.
+if (-not $ToolPath) {
+    $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+    $ToolPath = Join-Path (Split-Path -Parent $here) 'LLX-Tool.ps1'
+}
 if (-not (Test-Path -LiteralPath $ToolPath)) { throw "LLX-Tool.ps1 not found at $ToolPath" }
 $Tool = (Resolve-Path -LiteralPath $ToolPath).ProviderPath
 $Work = Join-Path ([System.IO.Path]::GetTempPath()) ("llxtool-test-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
