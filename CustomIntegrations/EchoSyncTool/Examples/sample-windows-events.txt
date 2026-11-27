@@ -1,0 +1,18 @@
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Microsoft-Windows-Security-Auditing' Guid='{54849625-5478-4994-A5BA-3E3B0328C30D}'/>
+    <EventID>4625</EventID>
+    <Level>0</Level>
+    <TimeCreated SystemTime='2026-01-01T09:00:00.000000000Z'/>
+    <EventRecordID>1001</EventRecordID>
+    <Channel>Security</Channel>
+    <Computer>DC01.example.com</Computer>
+  </System>
+  <EventData>
+    <Data Name='TargetUserName'>jdoe</Data>
+    <Data Name='TargetDomainName'>EXAMPLE</Data>
+    <Data Name='LogonType'>3</Data>
+    <Data Name='IpAddress'>192.0.2.50</Data>
+  </EventData>
+</Event>
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-Security-Auditing'/><EventID>4624</EventID><Level>0</Level><TimeCreated SystemTime='2026-01-01T09:00:05.000000000Z'/><EventRecordID>1002</EventRecordID><Channel>Security</Channel><Computer>DC01.example.com</Computer></System><EventData><Data Name='TargetUserName'>jdoe</Data><Data Name='LogonType'>3</Data><Data Name='IpAddress'>192.0.2.50</Data></EventData></Event>
