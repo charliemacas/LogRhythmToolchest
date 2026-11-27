@@ -32,8 +32,16 @@ Nothing is changed in LogRhythm. Echo is the only place anything is created.
 
 Requires Windows PowerShell 5.1 or PowerShell 7+. Nothing else to install.
 
+The tool lives in `CustomIntegrations/EchoSyncTool` of the [LogRhythmToolchest](../../README.md) repository. Download it and open PowerShell in that folder:
+
 ```powershell
-# One-off, from the repository folder
+Invoke-WebRequest https://github.com/charliemacas/LogRhythmToolchest/archive/refs/heads/main.zip -OutFile LogRhythmToolchest.zip
+Expand-Archive LogRhythmToolchest.zip C:\Tools
+cd C:\Tools\LogRhythmToolchest-main\CustomIntegrations\EchoSyncTool
+```
+
+```powershell
+# One-off, from the EchoSyncTool folder
 Get-ChildItem -Recurse | Unblock-File
 $env:LR_API_TOKEN = Read-Host 'LogRhythm API token'
 ```
@@ -76,7 +84,7 @@ Full instructions, every option and troubleshooting: **[docs/Build-EchoCoverage.
 
 ---
 
-## What's in the repository
+## What's in this folder
 
 | Path | What it is |
 |---|---|

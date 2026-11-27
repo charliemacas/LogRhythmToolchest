@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1
+
+### Build-EchoCoverage.ps1 1.0.1
+- Windows PowerShell 5.1: string request bodies are now sent as UTF-8 bytes with `charset=utf-8`. Before, 5.1 encoded them as ISO-8859-1, so `addLogs` failed for logs containing characters such as a BOM (seen in McAfee ePO logs). The empty use case was rolled back and the rule reported as Failed.
+- Windows PowerShell 5.1: a rule whose drilldown returned exactly one log no longer fails at the LLX stage with "The property 'Count' cannot be found".
+
+### Tests
+- `Test-LLXTool.ps1` and `Test-EchoCoverage.ps1` now run on Windows PowerShell 5.1 as well as PowerShell 7.
+
+### Repository
+- Moved into `CustomIntegrations/EchoSyncTool` of LogRhythmToolchest. Setup instructions updated for the new location.
+
 ## 1.0.0
 
 ### Build-EchoCoverage.ps1 1.0.0

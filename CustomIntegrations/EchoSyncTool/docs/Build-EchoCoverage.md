@@ -35,7 +35,7 @@ Enabled AIE rules ─► Which fired? ─► Drilldown logs ─► .llx per rule
 
 ## Where the files are
 
-See the repository [README](../README.md) for the layout. Commands below are run from the repository root.
+See the [README](../README.md) for the layout. Commands below are run from the tool folder, `CustomIntegrations\EchoSyncTool` (where `Build-EchoCoverage.ps1` is).
 
 ---
 
@@ -54,7 +54,7 @@ See the repository [README](../README.md) for the layout. Commands below are run
 
 ## Setup
 
-1. Clone the repository (or download and extract it), e.g. to `C:\Tools\LR-Echo-Coverage`, and open PowerShell there.
+1. Clone the [LogRhythmToolchest](../../../README.md) repository (or download and extract its zip), e.g. to `C:\Tools\LogRhythmToolchest-main`, and open PowerShell in its `CustomIntegrations\EchoSyncTool` folder.
 2. Unblock the files:
 
    ```powershell

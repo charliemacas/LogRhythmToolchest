@@ -15,12 +15,12 @@ All data in it is synthetic. It is written in Python (standard library only) bec
    ```bash
    openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 7 -subj "/CN=localhost"
    ```
-   On Windows without OpenSSL, run this in WSL or Git Bash.
-2. Start the mock servers:
+   On Windows without OpenSSL, run this in WSL or Git Bash. In Git Bash, write the subject as `-subj "//CN=localhost"`, otherwise Git Bash turns `/CN=localhost` into a Windows path.
+2. Start the mock servers from the tool folder (`CustomIntegrations/EchoSyncTool`):
    ```bash
    python3 Tests/MockServers/mock_lr_echo.py --cert cert.pem --key key.pem --lr-port 18501 --echo-port 13333
    ```
-3. In PowerShell, from the repository root:
+3. In PowerShell (Windows PowerShell 5.1 or PowerShell 7), from the same folder:
    ```powershell
    .\Tests\Test-EchoCoverage.ps1 -LrApiBaseUrl https://127.0.0.1:18501 -EchoBaseUrl https://127.0.0.1:13333
    ```

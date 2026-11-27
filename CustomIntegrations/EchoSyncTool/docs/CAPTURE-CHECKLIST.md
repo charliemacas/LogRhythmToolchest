@@ -1,6 +1,6 @@
 # Capture checklist: confirming the undocumented formats
 
-**Status:** the formats the pipeline depends on have been confirmed in a live lab (`HANDOVER.md` in the repository root, §4, items C1–C13). Use this checklist when something behaves differently on **another LogRhythm or Echo version**, or to confirm the remaining assumptions (A1–A4: rollback delete, Echo login, some response shapes, the EMDB enabled-rules query). Each item says what it settles.
+**Status:** the formats the pipeline depends on have been confirmed in a live lab (`HANDOVER.md` in the tool folder, §4, items C1–C13). Use this checklist when something behaves differently on **another LogRhythm or Echo version**, or to confirm the remaining assumptions (A1–A4: rollback delete, Echo login, some response shapes, the EMDB enabled-rules query). Each item says what it settles.
 
 **Before sharing anything: redact** real usernames, hostnames, IPs, domains and raw log content. Replace them consistently (e.g. `jdoe` → `user1` everywhere). Remove tokens, cookies and passwords. Structure and field names matter; values don't.
 

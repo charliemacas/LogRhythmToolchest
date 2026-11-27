@@ -40,7 +40,7 @@ It needs no LogRhythm software, makes no network connections and changes nothing
 | Sample logs to practise with | `Examples/sample-*.txt` |
 | Self-test | `Tests/Test-LLXTool.ps1` |
 
-Commands below are run from the repository root. All example data is invented (`example.com` hosts, documentation-only IP ranges).
+Commands below are run from the tool folder, `CustomIntegrations\EchoSyncTool` (where `LLX-Tool.ps1` is). All example data is invented (`example.com` hosts, documentation-only IP ranges).
 
 ---
 
@@ -53,12 +53,12 @@ Commands below are run from the repository root. All example data is invented (`
 
 ## Setup (one-off)
 
-1. **Get the files**: clone the repository or download it as a zip and extract it, e.g. to `C:\Tools\LR-Echo-Coverage`.
+1. **Get the files**: clone the [LogRhythmToolchest](../../../README.md) repository or download it as a zip and extract it, e.g. to `C:\Tools\LogRhythmToolchest-main`.
 
 2. **Open PowerShell** in that folder:
 
    ```powershell
-   cd C:\Tools\LR-Echo-Coverage
+   cd C:\Tools\LogRhythmToolchest-main\CustomIntegrations\EchoSyncTool
    ```
 
 3. **Unblock the files.** Windows marks downloaded files as untrusted:

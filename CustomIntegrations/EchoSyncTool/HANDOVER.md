@@ -28,8 +28,8 @@
 
 | Item | State |
 |---|---|
-| Version | Build-EchoCoverage 1.0.0, LLX-Tool 1.1.1, Lab scripts (single-alarm quick-start) |
-| Runtime | Windows PowerShell 5.1 (lab-verified for the Lab scripts and LLX-Tool) and PowerShell 7 (tests) |
+| Version | Build-EchoCoverage 1.0.1, LLX-Tool 1.1.1, Lab scripts (single-alarm quick-start) |
+| Runtime | Windows PowerShell 5.1 (lab-verified for the Lab scripts and LLX-Tool) and PowerShell 7. Both test suites pass on 5.1 and 7 |
 | Live lab proof | Alarm → drilldown REST → LLX → Echo unpack → use case created via API (titled with alarm name) → replay → logs landed and parsed with the same MPE rule/metadata as the originals |
 | Tests | 11/11 end-to-end (mock), 19/19 LLX-Tool |
 | Not yet proven live | The full multi-rule pipeline run on a customer system; EMDB "enabled rules" default query (use `-RulesQuery`/`-RulesCsv` if counts differ); Echo instances that require a login |
@@ -40,7 +40,7 @@
 ## 2. Files and run-folder layout
 
 ```
-README.md                   repository overview (start here)
+README.md                   tool overview (start here)
 docs/Build-EchoCoverage.md  pipeline user guide
 docs/LLX-Tool.md            LLX-Tool user guide
 docs/LLX-Tool-HANDOVER.md   LLX format (MS-NRBF) and LLX-Tool internals

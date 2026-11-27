@@ -34,10 +34,10 @@ If a user reports a problem, check first whether it falls in one of the "not yet
 
 ---
 
-## 2. Repository layout
+## 2. Folder layout
 
 ```
-LLX-Tool.ps1                  Script (PowerShell + embedded C#), repository root
+LLX-Tool.ps1                  Script (PowerShell + embedded C#), tool folder root
 docs/LLX-Tool.md              User guide
 docs/LLX-Tool-HANDOVER.md     This document
 Examples/*.txt                Synthetic inputs (no real data)
